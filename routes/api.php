@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DesignController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\TownController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +19,16 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/**Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::middleware('auth:sanctum')->get('/designs', [DesignController::class, 'index']);
+middleware('auth:sanctum')-> 
+Route::get('/designs', [PatternController::class, 'index']);
+*/
 Route::post('/login', [UserController::class, 'login']);
+
+Route::get('/department', [DepartmentController::class, 'index']);
+Route::get('/town/department/{id}', [TownController::class, 'department']);
+Route::get('/greeting', function () {
+    return 'Hello World';
+});
