@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserLikeCategory;
+use App\Models\UserLikeImageproduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -35,48 +38,90 @@ class UserController extends Controller
     $user = User::all();
     return response()->json($user, 200);
   }
-  /*
-  public function indexFilter($id)
-  {
-    $users = User::where(function ($query) use ($id) {
-      $query->where('firstname', 'like', '%'.$id.'%')
-        ->orWhere('lastname', 'like', '%'.$id.'%')
-        ->orWhere('phone', 'like', '%'.$id.'%')
-        ->orWhere('email', 'like', '%'.$id.'%');
-    })->get();
-    return response()->json($users, 200);
-  }
 
-  public function showOneUser($id)
+  /**Create Like ImageProduct*/
+  public function createLikeImageproduct(Request $request)
   {
-    return response()->json(User::find($id));
+    $likeImageproduct = UserLikeImageproduct::create($request->all());
+    return response()->json($likeImageproduct, 200);
   }
-
-  public function create(Request $request)
+  /**Show Like ImageProduct*/
+  public function showLikeImageproduct(Request $request)
+  {
+    $likeImageproduct = DB::table('user_like_imageproduct')
+      ->join('imageproducts', 'imageproducts.id', '=', 'user_like_imageproduct.imageproduct_id')
+      ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
+      ->select('imageproducts.id', 'texts_imageproducts.title', 'texts_imageproducts.description')
+      ->where('user_like_imageproduct.user_id', '=', $request->user_id)
+      ->where('texts_imageproducts.language_id', '=', $request->lenguage)
+      ->get();
+    return response()->json($likeImageproduct, 200);
+  }
+  /**Delete Like ImageProduct*/
+  public function deleteLikeImageproduct(Request $request)
   {
     $this->validate($request, [
-      'firstname' => 'required',
-      'lastname' => 'required',
-      'phone' => 'required',
-      'email' => 'required|email|unique:users'
+      'user_id' => 'required',
+      'imageproduct_id' => 'required'
     ]);
 
-    $User = User::create($request->all());
+    $likeImageproduct = DB::table('user_like_imageproduct')
+    ->where('user_id', $request->user_id)  
+    ->where('imageproduct_id', $request->imageproduct_id)
+    ->delete();
 
-    return response()->json($User, 201);
+    return response()->json('Deleted Successfully', 200);
   }
 
-  public function update($id, Request $request)
+  /**Create Like Category*/
+  public function createLikeCategory(Request $request)
   {
-    $User = User::findOrFail($id);
-    $User->update($request->all());
+    DB::table('user_like_category')
+    ->where('user_id', $request->user_id)  
+    ->delete();
 
-    return response()->json($User, 200);
+    foreach($request->category_id as $category){
+      $likeCategory = UserLikeCategory::create([
+        'user_id' => $request->user_id,
+        'category_id' => $category
+      ]);
+    }    
+    return response()->json($likeCategory, 200);
+  }
+  /**Delete Like Category*/
+  public function deleteLikeCategory(Request $request)
+  {
+    $this->validate($request, [
+      'user_id' => 'required',
+      'category_id' => 'required'
+    ]);
+
+    $likeCategory = DB::table('user_like_category')
+    ->where('user_id', $request->user_id)  
+    ->where('category_id', $request->category_id)
+    ->delete();
+
+    return response()->json('Deleted Successfully', 200);
+  }
+  /**Select Like Category*/
+  public function showLikeCategory(Request $request)
+  {
+    //$likeCategory = UserLikeCategory::where('user_id', $request->id)->get();
+    $texts = DB::table('categories')
+      ->leftJoin('user_like_category', function($leftJoin) use ($request){
+        $leftJoin->on('categories.id', '=', 'user_like_category.category_id')
+        ->where('user_like_category.user_id', '=', $request->user_id);
+      })
+      ->select(
+        'categories.id', 
+        'categories.name',
+        DB::raw('(CASE WHEN user_like_category.user_id IS NULL THEN false ELSE true END) as like_category') 
+      )
+      ->orderBy('categories.name', 'asc')
+      ->get();
+
+    return response()->json($texts, 200);
   }
 
-  public function delete($id)
-  {
-    User::findOrFail($id)->delete();
-    return response('Deleted Successfully', 200);
-  }*/
+  
 }
