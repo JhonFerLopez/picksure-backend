@@ -7,6 +7,7 @@ use App\Http\Controllers\ImageproductsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\TownController;
+use App\Http\Controllers\CategoriesController;
 
 
 /*
@@ -35,9 +36,15 @@ Route::post('/user/like_imageproduct', [UserController::class, 'createLikeImagep
 Route::get('/user/like_imageproduct', [UserController::class, 'showLikeImageproduct']);
 Route::delete('/user/like_imageproduct', [UserController::class, 'deleteLikeImageproduct']);
 
+Route::get('/categories', [CategoriesController::class, 'index']);
+
 Route::get('/department', [DepartmentController::class, 'index']);
 Route::get('/town/department/{id}', [TownController::class, 'department']);
 Route::get('/imageproducts', [ImageproductsController::class, 'index']);
+Route::get('/imageproducts/get/{id}/', [ImageproductsController::class, 'showOne']);
+Route::get('/imageproducts/category', [ImageproductsController::class, 'categoryId']);
+Route::get('/imageproducts/search', [ImageproductsController::class, 'search']);
+
 Route::get('/greeting', function () {
     return 'Hello World';
 });

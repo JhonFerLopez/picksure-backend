@@ -18,6 +18,8 @@ use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 
 use App\Models\Language;
 use App\Models\TextsImageproducts;
+use App\Models\ImageproductsCategory;
+use TCG\Voyager\Models\Category;
 use Livewire\Component;
 
 class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseController
@@ -329,6 +331,20 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 					$view = "voyager::$slug.edit-add";
 			}
 			$languages = Language::all();
+			$categories = DB::table('categories')
+      ->leftJoin('imageproduct_category', function($leftJoin) use ($id){
+        $leftJoin->on('categories.id', '=', 'imageproduct_category.category_id')
+        ->where('imageproduct_category.imageproduct_id', '=', $id);
+      })
+      ->select(
+        'categories.id', 
+				'categories.name', 
+        'imageproduct_category.category_id',
+        DB::raw('(CASE WHEN imageproduct_category.category_id IS NULL THEN false ELSE true END) as selected') 
+      )
+      ->orderBy('categories.order', 'asc')
+			->orderBy('categories.slug', 'asc')
+      ->get();
 			
 			$texts = DB::table('texts_imageproducts')
 				->join('languages', 'texts_imageproducts.language_id', '=', 'languages.id')
@@ -338,7 +354,7 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 					
 			$itemTexts = $texts;
 
-			return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable', 'languages', 'itemTexts'));
+			return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable', 'languages', 'categories', 'itemTexts'));
 	}
 
 	// POST BR(E)AD
@@ -382,6 +398,7 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 			
 			$input = $request->all();
 			$items = $this->addTexts($id, $input);
+			$this->addCategoriesImageproducts($id, $input);
 			
 			event(new BreadDataUpdated($dataType, $data));
 
@@ -444,35 +461,10 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 			}
 
 			$languages = Language::all();
+			$categories = Category::all();
 			$itemTexts = $this->itemTexts;
 
-			return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable','languages','itemTexts'));
-	}
-
-
-	public function addTexts($id, $data){	
-		$itemLenguage = $data['language'];
-		$itemTitle = $data['title'];
-		$itemDescription = $data['description'];
-
-		try {
-			DB::beginTransaction();
-			TextsImageproducts::where('imageproduct_id', $id)->delete();
-			foreach ($itemLenguage as $key => $value) {
-				$texts = TextsImageproducts::create([
-					'imageproduct_id' => $id,
-					'language_id' => $value,
-					'title' => $itemTitle[$key],
-					'description' => $itemDescription[$key],
-				]);
-			} 	
-			DB::commit();
-			return $texts;
-		} catch (\Exception $e) {
-			//throw $th;
-			DB::rollback();
-			return $e;
-		}     
+			return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable', 'languages', 'categories', 'itemTexts'));
 	}
 
 	/**
@@ -496,6 +488,9 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 			$data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
 			event(new BreadDataAdded($dataType, $data));
+
+			$input = $request->all();
+			$items = $this->addTexts($data->id, $input);
 
 			if (!$request->has('_tagging')) {
 					if (auth()->user()->can('browse', $data)) {
@@ -561,6 +556,8 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 
 							event(new BreadDataDeleted($dataType, $data));
 					}
+					ImageproductsCategory::where('imageproduct_id', $id)->delete();
+					TextsImageproducts::where('imageproduct_id', $id)->delete();
 			}
 
 			$displayName = $affected > 1 ? $dataType->getTranslatedAttribute('display_name_plural') : $dataType->getTranslatedAttribute('display_name_singular');
@@ -1053,5 +1050,51 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 	protected function relationIsUsingAccessorAsLabel($details)
 	{
 			return in_array($details->label, app($details->model)->additional_attributes ?? []);
+	}
+
+	public function addTexts($id, $data){	
+		$itemLenguage = $data['language'];
+		$itemTitle = $data['title'];
+		$itemDescription = $data['description'];
+
+		try {
+			DB::beginTransaction();
+			TextsImageproducts::where('imageproduct_id', $id)->delete();
+			foreach ($itemLenguage as $key => $value) {
+				$texts = TextsImageproducts::create([
+					'imageproduct_id' => $id,
+					'language_id' => $value,
+					'title' => $itemTitle[$key],
+					'description' => $itemDescription[$key],
+				]);
+			} 	
+			DB::commit();
+			return $texts;
+		} catch (\Exception $e) {
+			//throw $th;
+			DB::rollback();
+			return $e;
+		}     
+	}
+
+	public function addCategoriesImageproducts($id, $data){	
+		$itemCategory = $data['category'];
+		
+		try {
+			DB::beginTransaction();
+			ImageproductsCategory::where('imageproduct_id', $id)->delete();
+			foreach ($itemCategory as $key => $value) {
+				$texts = ImageproductsCategory::create([
+					'imageproduct_id' => $id,
+					'category_id' => $value,
+				]);
+			} 	
+			DB::commit();
+			return $texts;
+		} catch (\Exception $e) {
+			throw $e;
+			DB::rollback();
+			return $e;
+		}
 	}
 }

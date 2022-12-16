@@ -98,54 +98,17 @@
 						<div class="col-md-3">
 							<h3 class="panel-title">Selecciona la Categoría</h3>
 							<div class="categories-product">
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
-								<input type="checkbox" name="genero[]" value="Hombre"><label>Hombre</label><br/>
-								<input type="checkbox" name="genero[]" value="Mujer"><label>Mujer</label><br/>
+								@foreach($categories as $category)
+									<div class="form-check">
+										<input type="checkbox" name="category[]" value="{{ $category->id }}" 
+											class="form-check-input" 
+											@if ($category->selected)
+												checked
+											@endif
+											>
+										<label class="form-check-label">{{ $category->name }}</label>
+									</div>
+                @endforeach
 							</div>
 						</div>
 					</div><!-- panel-body -->

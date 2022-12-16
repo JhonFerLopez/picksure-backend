@@ -108,15 +108,17 @@ class UserController extends Controller
   {
     //$likeCategory = UserLikeCategory::where('user_id', $request->id)->get();
     $texts = DB::table('categories')
+      ->join('texts_categories', 'texts_categories.category_id', '=', 'categories.id')
       ->leftJoin('user_like_category', function($leftJoin) use ($request){
         $leftJoin->on('categories.id', '=', 'user_like_category.category_id')
         ->where('user_like_category.user_id', '=', $request->user_id);
       })
       ->select(
         'categories.id', 
-        'categories.name',
+        'texts_categories.name',
         DB::raw('(CASE WHEN user_like_category.user_id IS NULL THEN false ELSE true END) as like_category') 
       )
+      ->where('texts_categories.language_id', '=', $request->lenguage)
       ->orderBy('categories.name', 'asc')
       ->get();
 
