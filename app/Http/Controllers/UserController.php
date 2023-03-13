@@ -30,7 +30,7 @@ class UserController extends Controller
       $response['status'] = 402;
       $response['msg'] = 'Usuario no existe.';
     }
-    return response()->json($response, 200);
+    return response()->json($response, $response['status']);
   }
 
 	public function index(Request $request)

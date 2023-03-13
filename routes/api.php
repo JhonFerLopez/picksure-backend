@@ -36,7 +36,7 @@ Route::post('/user/like_imageproduct', [UserController::class, 'createLikeImagep
 Route::get('/user/like_imageproduct', [UserController::class, 'showLikeImageproduct']);
 Route::delete('/user/like_imageproduct', [UserController::class, 'deleteLikeImageproduct']);
 Route::get('/categories', [CategoriesController::class, 'index']);
-Route::get('/department', [DepartmentController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/department', [DepartmentController::class, 'index']);
 Route::get('/town/department/{id}', [TownController::class, 'department']);
 Route::get('/qualify', [QualifyController::class, 'index']);
 Route::get('/qualify/{id}', [QualifyController::class, 'rateApp']);
