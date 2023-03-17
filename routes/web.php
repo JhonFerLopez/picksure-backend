@@ -14,7 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return view('welcome');
+});
+
+Route::get('/phpinfo', function() {
+	return phpinfo();
+});
+
+Route::group(['prefix' => 'admin'], function () {
+	Voyager::routes();
 });
 
 
