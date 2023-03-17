@@ -42,7 +42,11 @@ return [
     */
 
     'models' => [
+<<<<<<< HEAD
        // 'namespace' => 'App\\Models\\',
+=======
+        //'namespace' => 'App\\Models\\',
+>>>>>>> 30e195fa2b28ef109a1d18adb869bb5a9af4c151
     ],
 
     /*
@@ -144,7 +148,13 @@ return [
         ],
 
         'widgets' => [
+<<<<<<< HEAD
 
+=======
+            'TCG\\Voyager\\Widgets\\UserDimmer',
+            'TCG\\Voyager\\Widgets\\PostDimmer',
+            'TCG\\Voyager\\Widgets\\PageDimmer',
+>>>>>>> 30e195fa2b28ef109a1d18adb869bb5a9af4c151
         ],
 
     ],
@@ -188,10 +198,18 @@ return [
     // Here you can specify additional assets you would like to be included in the master.blade
     'additional_css' => [
         //'css/custom.css',
+<<<<<<< HEAD
+=======
+        'css/style-ziel.css',
+>>>>>>> 30e195fa2b28ef109a1d18adb869bb5a9af4c151
     ],
 
     'additional_js' => [
         //'js/custom.js',
+<<<<<<< HEAD
+=======
+        'https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js'
+>>>>>>> 30e195fa2b28ef109a1d18adb869bb5a9af4c151
     ],
 
     'googlemaps' => [
@@ -203,6 +221,7 @@ return [
         'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
     ],
 
+<<<<<<< HEAD
     /*
     |--------------------------------------------------------------------------
     | Model specific settings
@@ -218,6 +237,8 @@ return [
         'cache' => false,
     ],
 
+=======
+>>>>>>> 30e195fa2b28ef109a1d18adb869bb5a9af4c151
     // Activate compass when environment is NOT local
     'compass_in_production' => false,
 
