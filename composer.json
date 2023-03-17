@@ -11,12 +11,8 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-<<<<<<< HEAD
-        "tcg/voyager": "^1.6"
-=======
-        "livewire/livewire": "^2.10",
-        "tcg/voyager": "^1.5"
->>>>>>> da2eb5a7ae87842c6202de92f0171f831fa54dd2
+        "tcg/voyager": "^1.6",
+        "livewire/livewire": "^2.10"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
