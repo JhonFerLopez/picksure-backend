@@ -2,51 +2,223 @@
     "openapi": "3.0.0",
     "info": {
         "title": "PICKSURE - ZIEL DOCUMENTATIONS",
-        "description": "L5 Swagger OpenApi description",
         "contact": {
-            "email": "darius@matulionis.lt"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+            "email": "info@ziel.com.co"
         },
         "version": "1.0.0"
     },
     "paths": {
+        "/api/v1/auth/token": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login de Usuario y Generación de Token",
+                "description": "Retorna un Json con el Token del Usuario",
+                "operationId": "8f34aba8da985e9d709116a11c59d3c1",
+                "requestBody": {
+                    "content": {
+                        "application/raw": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "flover.sanchez@ziel.com.co"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "msg": {
+                                            "type": "string",
+                                            "example": "TTpPem996u4yMZ"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Los datos son incorrectos."
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/department": {
             "get": {
                 "tags": [
-                    "departments"
+                    "Departamento"
                 ],
-                "summary": "Finds Pets by status",
-                "description": "Multiple status values can be provided with comma separated string",
+                "summary": "Devuelve todos los Departamentos",
+                "description": "Retorna un Json con los Datos de los Departamentos.",
+                "operationId": "29ef540def3a04356f8ccb0e8c44f45e",
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Valle del Cauca"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Los datos son incorrectos."
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/town/department/{idDepartment}": {
+            "get": {
+                "tags": [
+                    "Municipios"
+                ],
+                "summary": "Devuelve todos los Municipios asignados a un departamento",
+                "description": "Retorna un Json con los Datos de los Municipios.",
                 "operationId": "index",
                 "parameters": [
                     {
-                        "name": "status",
-                        "in": "query",
-                        "description": "Status values that needed to be considered for filter",
+                        "name": "idDepartment",
+                        "in": "path",
+                        "description": "ID del Departamento",
                         "required": true,
-                        "explode": true,
                         "schema": {
-                            "type": "string",
-                            "default": "available",
-                            "enum": [
-                                "available",
-                                "pending",
-                                "sold"
-                            ]
+                            "type": "integer",
+                            "default": "1"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation"
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Cali"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
-                    "400": {
-                        "description": "Invalid status value"
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Los datos son incorrectos."
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Token de acceso obtenido en la autenticación",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "Bearer"
             }
         }
     }

@@ -12,28 +12,7 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
 
-  public function login(Request $request)
-  {    	
-    $response = ['status' => 200, 'msg' => 'Hola John' ];
-    $data = json_decode($request->getContent());
-    $user = User::where('email', $data->email)->first();
-    if($user){
-      if(Hash::check($data->password, $user->password)){
-        $token = $user->createToken('example');
-        $response['status'] = 200;
-        $response['msg'] = $token->plainTextToken; 
-      }else {
-        $response['status'] = 402;
-        $response['msg'] = 'Password Incorrecta.';  
-      }
-    }else {
-      $response['status'] = 402;
-      $response['msg'] = 'Usuario no existe.';
-    }
-    return response()->json($response, $response['status']);
-  }
-
-	public function index(Request $request)
+  public function index(Request $request)
   {    	
     $user = User::all();
     return response()->json($user, 200);

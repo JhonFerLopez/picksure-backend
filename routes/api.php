@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ImageproductsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
@@ -28,7 +29,7 @@ use App\Http\Controllers\QualifyController;
 middleware('auth:sanctum')-> */
 
 
-Route::post('/user/login', [UserController::class, 'login']);
+Route::post('/auth/token', [AuthController::class, 'login']);
 Route::get('/user/like_category', [UserController::class, 'showLikeCategory']);
 Route::post('/user/like_category', [UserController::class, 'createLikeCategory']);
 Route::delete('/user/like_category', [UserController::class, 'deleteLikeCategory']);
@@ -37,6 +38,7 @@ Route::get('/user/like_imageproduct', [UserController::class, 'showLikeImageprod
 Route::delete('/user/like_imageproduct', [UserController::class, 'deleteLikeImageproduct']);
 Route::get('/categories', [CategoriesController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/department', [DepartmentController::class, 'index']);
+//Route::get('/department', [DepartmentController::class, 'index']);
 Route::get('/town/department/{id}', [TownController::class, 'department']);
 Route::get('/qualify', [QualifyController::class, 'index']);
 Route::get('/qualify/{id}', [QualifyController::class, 'rateApp']);

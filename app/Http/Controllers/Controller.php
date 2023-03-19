@@ -9,18 +9,23 @@ use Illuminate\Routing\Controller as BaseController;
 
 /**
  * @OA\Info(
- *      version="1.0.0",
- *      title="PICKSURE - ZIEL DOCUMENTATIONS",
- *      description="L5 Swagger OpenApi description",
- *      @OA\Contact(
- *          email="darius@matulionis.lt"
- *      ),
- *     @OA\License(
- *         name="Apache 2.0",
- *         url="https://www.apache.org/licenses/LICENSE-2.0.html"
- *     )
+ *   title="PICKSURE - ZIEL DOCUMENTATIONS",
+ *   version="1.0.0",
+ *   contact={
+ *     "email": "info@ziel.com.co"
+ *   }
+ * )
+ * @OA\SecurityScheme(
+ *  type="http",
+ *  description="Token de acceso obtenido en la autenticación",
+ *  name="bearerAuth",
+ *  in="header",
+ *  scheme="Bearer",
+ *  bearerFormat="JWT",
+ *  securityScheme="bearerAuth"
  * )
  */
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
