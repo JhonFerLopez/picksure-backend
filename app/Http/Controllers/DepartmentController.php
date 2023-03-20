@@ -10,34 +10,29 @@ class DepartmentController extends Controller
 {
   /**
      * @OA\Get(
-     *     path="/api/v1/department",
-     *     tags={"departments"},
-     *     summary="Finds Pets by status",
-     *     description="Multiple status values can be provided with comma separated string",
-     *     operationId="index",
-     *     @OA\Parameter(
-     *         name="status",
-     *         in="query",
-     *         description="Status values that needed to be considered for filter",
-     *         required=true,
-     *         explode=true,
-     *         @OA\Schema(
-     *             default="available",
-     *             type="string",
-     *             enum={"available", "pending", "sold"},
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="successful operation",
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Invalid status value"
-     *     )
+     *  tags={"Departamento"},
+     *  summary="Devuelve todos los Departamentos",
+     *  description="Retorna un Json con los Datos de los Departamentos.",
+     *  path="/api/v1/department",
+     *  security={{ "bearerAuth": {} }},
+     *  @OA\Response(
+     *    response=200,
+     *    description="Resultado de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="id", type="integer", example="1"),
+     *       @OA\Property(property="name", type="string", example="Valle del Cauca"),
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Estado Invalido de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Los datos son incorrectos."),
+     *       @OA\Property(property="errors", type="string", example="..."),
+     *    )
+     *  )
      * )
      */
-
   public function index(Request $request)
   {    	
     $department = Department::select(['id', 'name'])
