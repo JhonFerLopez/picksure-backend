@@ -161,7 +161,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "200":  {
                         "description": "Resultado de la Operación",
                         "content": {
                             "application/json": {
