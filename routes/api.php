@@ -56,8 +56,8 @@ Route::get('/qualify/{id}', [QualifyController::class, 'rateApp']);
 Route::post('/qualify/{id}', [QualifyController::class, 'createQualifyApp']);
 
 //Images
-Route::get('/imageproducts', [ImageproductsController::class, 'index']);
-Route::get('/imageproducts/get/{id}/', [ImageproductsController::class, 'showOne']);
+Route::middleware('auth:sanctum')->get('/imageproducts', [ImageproductsController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/imageproducts/{id}', [ImageproductsController::class, 'showOne']);
 Route::get('/imageproducts/category', [ImageproductsController::class, 'categoryId']);
 Route::get('/imageproducts/search', [ImageproductsController::class, 'search']);
 

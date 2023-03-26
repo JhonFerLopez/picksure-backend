@@ -137,7 +137,7 @@
                                             "type": "string",
                                             "example": "Los datos son incorrectos."
                                         },
-                                        "errors": {
+                                        "error": {
                                             "type": "string",
                                             "example": "..."
                                         }
@@ -281,6 +281,143 @@
                 ]
             }
         },
+        "/api/v1/imageproducts": {
+            "get": {
+                "tags": [
+                    "Imagenes"
+                ],
+                "summary": "Devuelve todas las imagenes filtrando el lenguaje",
+                "description": "Retorna un Json con los titulos de las imagenes filtradas por lenguaje",
+                "operationId": "0ed13cca4ae12811f15a90d3c28ddec9",
+                "parameters": [
+                    {
+                        "name": "lenguage",
+                        "in": "query",
+                        "description": "ID del Lenguage",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Lenguaje no existe."
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/imageproducts/{id}": {
+            "get": {
+                "tags": [
+                    "Imagenes"
+                ],
+                "summary": "Devuelve una imagen por su Id",
+                "description": "Retorna un Json con la imagen seleccionada por el Id",
+                "operationId": "0fc067d089cb61eaac401fad62d93a84",
+                "parameters": [
+                    {
+                        "name": "Id imagen",
+                        "in": "path",
+                        "description": "Id imagen",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "imagen"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Los datos son incorrectos."
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/town/department/{idDepartment}": {
             "get": {
                 "tags": [
@@ -302,7 +439,7 @@
                     }
                 ],
                 "responses": {
-                    "200":  {
+                    "200": {
                         "description": "Resultado de la Operación",
                         "content": {
                             "application/json": {

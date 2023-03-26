@@ -51,5 +51,7 @@ class TownController extends Controller
     ->orderBy('name', 'asc')
     ->get();
     return response()->json($town, 200);
+    
+
   }
 }

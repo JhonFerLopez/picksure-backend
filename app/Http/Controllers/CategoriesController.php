@@ -40,7 +40,7 @@ class CategoriesController extends Controller
      *    description="Estado Invalido de la Operación",
      *    @OA\JsonContent(
      *       @OA\Property(property="message", type="string", example="Los datos son incorrectos."),
-     *       @OA\Property(property="errors", type="string", example="..."),
+     *       @OA\Property(property="error", type="string", example="..."),
      *    )
      *  )
      * )
