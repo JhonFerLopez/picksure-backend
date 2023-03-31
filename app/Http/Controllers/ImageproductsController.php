@@ -6,8 +6,11 @@ use App\Models\Imageproduct;
 use App\Models\Language;
 use App\Models\TextsImageproducts;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+
+use function PHPUnit\Framework\isEmpty;
 
 class ImageproductsController extends Controller
 {
@@ -46,13 +49,17 @@ class ImageproductsController extends Controller
      *  )
      * )
      */
-	public function index(Request $request)
+		public function index(Request $request)
   {  
+      	
+      if(!isset($request->lenguage)){
+        return response()->json(array('data' => 'No existe el parametro id Lenguage'), 502);
+      }
     $idLenguage = Language::where('id', $request->lenguage)->first();
     if($idLenguage){
       $image = DB::table('imageproducts')
       ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
-      ->select('imageproducts.id', 'texts_imageproducts.title', 'texts_imageproducts.description')
+      ->select('imageproducts.id', 'imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description')
       ->where('texts_imageproducts.language_id', '=', $request->lenguage)
       ->get();
       $response['status'] = 200;
@@ -71,7 +78,7 @@ class ImageproductsController extends Controller
      *  path="/api/v1/imageproducts/{id}",
      *  security={{ "bearerAuth": {} }},
      *  @OA\Parameter(
-     *    name="Id imagen",
+     *    name="image_id",
      *    in="path",
      *    description="Id imagen",
      *    required=true,
@@ -99,28 +106,85 @@ class ImageproductsController extends Controller
      */
 
 
-  public function showOne(Request $request, $id)
+  public function showOne(Request $request, $image_id)
   {    	
     $image = DB::table('imageproducts')
       ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
       ->select('imageproducts.id', 'imageproducts.user_id_create','texts_imageproducts.title','texts_imageproducts.imageproduct_id')
       ->where('texts_imageproducts.language_id', '=', $request->lenguage)
-      ->where('imageproducts.id', '=', $id)
+      ->where('imageproducts.id', '=', $image_id)
       ->get();
-      return response()->json($id, 200);  //pendiente
+      return response()->json($image_id, 200);  //pendiente
   }
 
+  /**
+     * @OA\Get(
+     *  tags={"Imagenes"},
+     *  summary="Devuelve todas las imagenes por categoria",
+     *  description="Retorna un Json con los las imagenes dependiendo la categoria ",
+     *  path="/api/v1/imageproducts/imageproduct_category/{category_id}/{lang_id}",
+     *  security={{ "bearerAuth": {} }},
+     *  @OA\Parameter(
+     *    name="category_id",
+     *    in="path",
+     *    description="Id de la categoria",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * @OA\Parameter(
+     *    name="lang_id",
+     *    in="path",
+     *    description="Id del lenguaje",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=200,
+     *    description="Resultado de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="integer", example="200"),
+     *       @OA\Property(property="title de la imagen", type="varchar", example="String")
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Estado Invalido de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Categoria no existe."),
+     *       @OA\Property(property="errors", type="string", example="..."),
+     *    )
+     *  )
+     * )
+     */
+
   // Consultar ImagenProduct por Id de Categoría
-  public function categoryId(Request $request)
-  {    	
-    $image = DB::table('imageproducts')
-      ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
+  public function categoryId($category_id, $lang_id)
+  { 
+    $response = [];
+
+    $images = DB::table('imageproducts')
+      ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
       ->join('imageproduct_category', 'imageproduct_category.imageproduct_id', '=', 'imageproducts.id')
-      ->select('imageproducts.id', 'texts_imageproducts.title', 'texts_imageproducts.description')
-      ->where('texts_imageproducts.language_id', '=', $request->lenguage)
-      ->where('imageproduct_category.category_id', '=', $request->category)
+      ->select('imageproducts.id', 'texts_imageproducts.language_id', 'texts_imageproducts.description','imageproducts.img_url')
+       ->where('texts_imageproducts.language_id', $lang_id)
+      ->where('imageproduct_category.category_id', $category_id)
       ->get();
-    return response()->json($image, 200);
+      if(!count($images) > 0){
+        $response['status'] = Response::HTTP_NOT_FOUND;
+        $response['data'] = 'No existe esta categoria';
+
+      }else{
+        $response['status'] = Response::HTTP_OK;
+        $response['data'] = $images;
+      }
+       
+    return response()->json($response, $response['status']);
   }
 
   // Consultar ImagenProduct modalidad Search

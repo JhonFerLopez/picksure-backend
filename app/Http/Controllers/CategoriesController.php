@@ -13,7 +13,7 @@ class CategoriesController extends Controller
   /**
      * @OA\Get(
      *  tags={"Categorias"},
-     *  summary="Devuelve todos los Categorias filtrando el lenguage recibido",
+     *  summary="Devuelve todas los Categorias filtrando el lenguage recibido",
      *  description="Retorna un Json con los Datos de las Categorias.",
      *  path="/api/v1/categories",
      *  security={{ "bearerAuth": {} }},
@@ -74,8 +74,8 @@ class CategoriesController extends Controller
   /**
      * @OA\Get(
      *  tags={"Categorias"},
-     *  summary="Devuelve todos los Municipios asignados a un departamento",
-     *  description="Retorna un Json con los Datos de los Municipios.",
+     *  summary="Devuelveel prefijo del idiomas",
+     *  description="Retorna el prefijo del idiomas",
      *  path="/api/v1/categories/{prefijo}",
      *  security={{ "bearerAuth": {} }},
      *  @OA\Parameter(

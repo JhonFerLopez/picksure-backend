@@ -360,7 +360,7 @@
                 "operationId": "0fc067d089cb61eaac401fad62d93a84",
                 "parameters": [
                     {
-                        "name": "Id imagen",
+                        "name": "image_id",
                         "in": "path",
                         "description": "Id imagen",
                         "required": true,
@@ -399,6 +399,85 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Los datos son incorrectos."
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/imageproducts/imageproduct_category/{category_id}/{lang_id}": {
+            "get": {
+                "tags": [
+                    "Imagenes"
+                ],
+                "summary": "Devuelve todas las imagenes por categoria",
+                "description": "Retorna un Json con los las imagenes dependiendo la categoria ",
+                "operationId": "286998bbe65bdbac0a0720e3409737d4",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "description": "Id de la categoria",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "lang_id",
+                        "in": "path",
+                        "description": "Id del lenguaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Categoria no existe."
                                         },
                                         "errors": {
                                             "type": "string",

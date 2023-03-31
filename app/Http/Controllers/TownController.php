@@ -50,7 +50,8 @@ class TownController extends Controller
     ->where('department_id', $id)
     ->orderBy('name', 'asc')
     ->get();
-    return response()->json($town, 200);
+    return response()->json($town, 200);  /*pendiente*/
+
     
 
   }
