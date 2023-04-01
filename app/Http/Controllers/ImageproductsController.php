@@ -71,19 +71,30 @@ class ImageproductsController extends Controller
     return response()->json($response, $response['status']);
   } 
    /**
-     * @OA\Get(
+     *  @OA\Get(
      *  tags={"Imagenes"},
-     *  summary="Devuelve una imagen por su Id",
-     *  description="Retorna un Json con la imagen seleccionada por el Id",
-     *  path="/api/v1/imageproducts/{id}",
+     *  summary="Devuelve la imagen por el id",
+     *  description="Retorna un Json con la imagene seleccionada por le Id ",
+     *  path="/api/v1/imageproducts/{image_id}/{lang_id}",
      *  security={{ "bearerAuth": {} }},
-     *  @OA\Parameter(
+     * @OA\Parameter(
      *    name="image_id",
      *    in="path",
-     *    description="Id imagen",
+     *    description="Id de la imagen",
      *    required=true,
      *    @OA\Schema(
-     *      type="string",
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * * @OA\Parameter(
+     *    name="lang_id",
+     *    in="path",
+     *    description="Id del lenguaje",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
      *    )
      *  ),
      *  @OA\Response(
@@ -106,15 +117,15 @@ class ImageproductsController extends Controller
      */
 
 
-  public function showOne(Request $request, $image_id)
+  public function showOne($image_id,$lang_id)
   {    	
-    $image = DB::table('imageproducts')
-      ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
-      ->select('imageproducts.id', 'imageproducts.user_id_create','texts_imageproducts.title','texts_imageproducts.imageproduct_id')
-      ->where('texts_imageproducts.language_id', '=', $request->lenguage)
-      ->where('imageproducts.id', '=', $image_id)
+    $image_id = DB::table('imageproducts')
+      ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
+      ->select('imageproducts.id', 'texts_imageproducts.language_id','texts_imageproducts.title', 'texts_imageproducts.description','imageproducts.img_url')
+      ->where('texts_imageproducts.language_id', $lang_id)
+      ->where('imageproducts.id', $image_id)
       ->get();
-      return response()->json($image_id, 200);  //pendiente
+      return response()->json($image_id, 200);  
   }
 
   /**
@@ -166,8 +177,6 @@ class ImageproductsController extends Controller
   // Consultar ImagenProduct por Id de Categoría
   public function categoryId($category_id, $lang_id)
   { 
-    $response = [];
-
     $images = DB::table('imageproducts')
       ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
       ->join('imageproduct_category', 'imageproduct_category.imageproduct_id', '=', 'imageproducts.id')

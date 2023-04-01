@@ -88,7 +88,7 @@
                 "tags": [
                     "Categorias"
                 ],
-                "summary": "Devuelve todos los Categorias filtrando el lenguage recibido",
+                "summary": "Devuelve todas los Categorias filtrando el lenguage recibido",
                 "description": "Retorna un Json con los Datos de las Categorias.",
                 "operationId": "9e975d8e2b6733988615c39b97de2eec",
                 "parameters": [
@@ -160,8 +160,8 @@
                 "tags": [
                     "Categorias"
                 ],
-                "summary": "Devuelve todos los Municipios asignados a un departamento",
-                "description": "Retorna un Json con los Datos de los Municipios.",
+                "summary": "Devuelveel prefijo del idiomas",
+                "description": "Retorna el prefijo del idiomas",
                 "operationId": "0242e3b8b81f18a1ebf86ad99ce2101b",
                 "parameters": [
                     {
@@ -350,22 +350,33 @@
                 ]
             }
         },
-        "/api/v1/imageproducts/{id}": {
+        "/api/v1/imageproducts/{image_id}/{lang_id}": {
             "get": {
                 "tags": [
                     "Imagenes"
                 ],
-                "summary": "Devuelve una imagen por su Id",
-                "description": "Retorna un Json con la imagen seleccionada por el Id",
-                "operationId": "0fc067d089cb61eaac401fad62d93a84",
+                "summary": "Devuelve la imagen por el id",
+                "description": "Retorna un Json con la imagene seleccionada por le Id ",
+                "operationId": "36425002d455896f5cefdcac0d6072da",
                 "parameters": [
                     {
                         "name": "image_id",
                         "in": "path",
-                        "description": "Id imagen",
+                        "description": "Id de la imagen",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "lang_id",
+                        "in": "path",
+                        "description": "Id del lenguaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
                         }
                     }
                 ],
