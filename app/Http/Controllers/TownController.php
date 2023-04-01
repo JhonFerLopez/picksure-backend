@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Town;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Response;
 
 class TownController extends Controller
 {
@@ -44,13 +44,21 @@ class TownController extends Controller
      *  )
      * )
      */
-  public function department(Request $request, $id)
+  public function department($depar_id)
   {    	
     $town = Town::select(['id', 'name'])
-    ->where('department_id', $id)
-    ->orderBy('name', 'asc')
+    ->where('department_id', $depar_id)
+    // ->orderBy('name', 'asc')
     ->get();
-    return response()->json($town, 200);  /*pendiente*/
+    if(!count($town) > 0){
+      $response['status'] = Response::HTTP_NOT_FOUND;
+      $response['data'] = 'No existe este departamento';
+      
+    }else{
+      $response['status'] = Response::HTTP_OK;
+      $response['data'] = $town;
+    }
+    return response()->json($response, $response['status']);
 
     
 
