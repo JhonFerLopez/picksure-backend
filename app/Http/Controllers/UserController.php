@@ -30,8 +30,8 @@ class UserController extends Controller
    /**
      * @OA\Get(
      *  tags={"Ver like de imagenes"},
-     *  summary="Devuelve todos los likes de las imagenes",
-     *  description="Retorna un Json con todos los likes de las imagenes",
+     *  summary="Devuelve todos los likes realizados por un usuario",
+     *  description="Retorna un Json con todos los likes  realizados por un usuario a las imagenes filtrandolo por el idioma",
      *  path="/api/v1/user/like_imageproduct/{user_id}/{lang_id}",
      *  security={{ "bearerAuth": {} }},
      * @OA\Parameter(
