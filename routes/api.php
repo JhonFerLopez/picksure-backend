@@ -12,6 +12,7 @@ use App\Http\Controllers\CategoriesController as Category;
 use App\Http\Controllers\QualifyController;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,7 +37,7 @@ Route::get('/user/like_category', [UserController::class, 'showLikeCategory']);
 Route::post('/user/like_category', [UserController::class, 'createLikeCategory']);
 Route::delete('/user/like_category', [UserController::class, 'deleteLikeCategory']);
 Route::post('/user/like_imageproduct', [UserController::class, 'createLikeImageproduct']);
-Route::get('/user/like_imageproduct', [UserController::class, 'showLikeImageproduct']);
+Route::middleware('auth:sanctum')->get('/user/like_imageproduct/{user_id}/{lang_id}', [UserController::class, 'showLikeImageproduct']);
 Route::delete('/user/like_imageproduct', [UserController::class, 'deleteLikeImageproduct']);
 
 //Categories

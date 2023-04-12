@@ -117,7 +117,7 @@ class ImageproductsController extends Controller
      */
 
 
-  public function showOne($image_id,$lang_id)
+  public function showOne(  $image_id,$lang_id)
   {    	
     $image_id = DB::table('imageproducts')
       ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
@@ -125,7 +125,18 @@ class ImageproductsController extends Controller
       ->where('texts_imageproducts.language_id', $lang_id)
       ->where('imageproducts.id', $image_id)
       ->get();
-      return response()->json($image_id, 200);  
+      if(!count($image_id) > 0){
+        $response['status'] = Response::HTTP_NOT_FOUND;
+        $response['data'] = 'No existe esta imagen';
+
+      }else{
+        $response['status'] = Response::HTTP_OK;
+        $response['data'] = $image_id;
+      }
+
+      
+      return response()->json($response, $response['status']);  
+
   }
 
   /**
@@ -177,6 +188,7 @@ class ImageproductsController extends Controller
   // Consultar ImagenProduct por Id de Categoría
   public function categoryId($category_id, $lang_id)
   { 
+    
     $images = DB::table('imageproducts')
       ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
       ->join('imageproduct_category', 'imageproduct_category.imageproduct_id', '=', 'imageproducts.id')

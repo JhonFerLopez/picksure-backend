@@ -7,7 +7,10 @@ use App\Models\UserLikeCategory;
 use App\Models\UserLikeImageproduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+
+use function PHPUnit\Framework\isEmpty;
 
 class UserController extends Controller
 {
@@ -24,18 +27,72 @@ class UserController extends Controller
     $likeImageproduct = UserLikeImageproduct::create($request->all());
     return response()->json($likeImageproduct, 200);
   }
-  /**Show Like ImageProduct*/
-  public function showLikeImageproduct(Request $request)
+   /**
+     * @OA\Get(
+     *  tags={"Ver like de imagenes"},
+     *  summary="Devuelve todos los likes de las imagenes",
+     *  description="Retorna un Json con todos los likes de las imagenes",
+     *  path="/api/v1/user/like_imageproduct/{user_id}/{lang_id}",
+     *  security={{ "bearerAuth": {} }},
+     * @OA\Parameter(
+     *    name="user_id",
+     *    in="path",
+     *    description="Id del usuario",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * * @OA\Parameter(
+     *    name="lang_id",
+     *    in="path",
+     *    description="Id del lenguaje",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Resultado de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="integer", example="200"),
+     *       @OA\Property(property="title de la imagen", type="varchar", example="String")
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Estado Invalido de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="No esxite like"),
+     *       @OA\Property(property="errors", type="string", example="..."),
+     *    )
+     *  )
+     * )
+     */
+  public function showLikeImageproduct($user_id,$lang_id)
   {
-    $likeImageproduct = DB::table('user_like_imageproduct')
+    $user_id = DB::table('user_like_imageproduct')
       ->join('imageproducts', 'imageproducts.id', '=', 'user_like_imageproduct.imageproduct_id')
-      ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
-      ->select('imageproducts.id', 'texts_imageproducts.title', 'texts_imageproducts.description')
-      ->where('user_like_imageproduct.user_id', '=', $request->user_id)
-      ->where('texts_imageproducts.language_id', '=', $request->lenguage)
+      ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
+      ->select('user_like_imageproduct.user_id', 'imageproducts.id','texts_imageproducts.language_id','texts_imageproducts.title', 'texts_imageproducts.description')
+      ->where('user_like_imageproduct.user_id', $user_id)
+      ->where('texts_imageproducts.language_id', $lang_id)
+      
       ->get();
-    return response()->json($likeImageproduct, 200);
+     if(!count($user_id) > 0){
+      $response['status'] = Response::HTTP_NOT_FOUND;
+      $response['data'] = 'Este usuario no le ha dado Like a ninguna imagen';
+
+    }else{
+      $response['status'] = Response::HTTP_OK;
+      $response['data'] = $user_id;
+    }
+    return response()->json($response, $response['status']);
   }
+
   /**Delete Like ImageProduct*/
   public function deleteLikeImageproduct(Request $request)
   {
