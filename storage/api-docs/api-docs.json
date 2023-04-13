@@ -580,11 +580,90 @@
         "/api/v1/user/like_imageproduct/{user_id}/{lang_id}": {
             "get": {
                 "tags": [
-                    "Ver like de imagenes"
+                    "Likes"
                 ],
-                "summary": "Devuelve todos los likes de las imagenes",
-                "description": "Retorna un Json con todos los likes de las imagenes",
+                "summary": "Devuelve todos los likes realizados por un usuario",
+                "description": "Retorna un Json con todos los likes  realizados por un usuario a las imagenes filtrandolo por el idioma",
                 "operationId": "03874c2ac21184f5383175b28e83c468",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Id del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "lang_id",
+                        "in": "path",
+                        "description": "Id del lenguaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No esxite like"
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/user/like_category/{user_id}/{lang_id}": {
+            "get": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Devuelve todos los likes realizados por un usuario",
+                "description": "Retorna un Json con todos los likes  realizados por un usuario a las categorias filtrandolo por el lenguaje",
+                "operationId": "7dffc7662f01d6e8210fdbff5913fb28",
                 "parameters": [
                     {
                         "name": "user_id",

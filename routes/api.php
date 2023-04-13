@@ -33,7 +33,7 @@ middleware('auth:sanctum')-> */
 Route::post('/auth/token', [AuthController::class, 'login']);
 
 //Users
-Route::get('/user/like_category', [UserController::class, 'showLikeCategory']);
+Route::get('/user/like_category/{user_id}/{lang_id}', [UserController::class, 'showLikeCategory']);
 Route::post('/user/like_category', [UserController::class, 'createLikeCategory']);
 Route::delete('/user/like_category', [UserController::class, 'deleteLikeCategory']);
 Route::post('/user/like_imageproduct', [UserController::class, 'createLikeImageproduct']);
