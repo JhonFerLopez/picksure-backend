@@ -48,13 +48,12 @@ class ImageproductsController extends Controller
      *    )
      *  )
      * )
-     */
-		public function index(Request $request)
+  */
+  public function index(Request $request)
   {  
-      	
-      if(!isset($request->lenguage)){
-        return response()->json(array('data' => 'No existe el parametro id Lenguage'), 502);
-      }
+    if(!isset($request->lenguage)){
+      return response()->json(array('data' => 'No existe el parametro id Lenguage'), 502);
+    }
     $idLenguage = Language::where('id', $request->lenguage)->first();
     if($idLenguage){
       $image = DB::table('imageproducts')
@@ -70,53 +69,52 @@ class ImageproductsController extends Controller
     }
     return response()->json($response, $response['status']);
   } 
-   /**
-     *  @OA\Get(
-     *  tags={"Imagenes"},
-     *  summary="Devuelve la imagen por el id",
-     *  description="Retorna un Json con la imagene seleccionada por le Id ",
-     *  path="/api/v1/imageproducts/{image_id}/{lang_id}",
-     *  security={{ "bearerAuth": {} }},
-     * @OA\Parameter(
-     *    name="image_id",
-     *    in="path",
-     *    description="Id de la imagen",
-     *    required=true,
-     *    @OA\Schema(
-     *      default="1",
-     *      type="integer",
-     *    )
-     *  ),
-     * * @OA\Parameter(
-     *    name="lang_id",
-     *    in="path",
-     *    description="Id del lenguaje",
-     *    required=true,
-     *    @OA\Schema(
-     *      default="1",
-     *      type="integer",
-     *    )
-     *  ),
-     *  @OA\Response(
-     *    response=200,
-     *    description="Resultado de la Operación",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="id", type="integer", example="1"),
-     *       @OA\Property(property="name", type="string", example="imagen"),
-     *    )
-     *  ),
-     *  @OA\Response(
-     *    response=422,
-     *    description="Estado Invalido de la Operación",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", example="Los datos son incorrectos."),
-     *       @OA\Property(property="errors", type="string", example="..."),
-     *    )
-     *  )
-     * )
-     */
 
-
+  /**
+   *  @OA\Get(
+   *  tags={"Imagenes"},
+   *  summary="Devuelve la imagen por el id",
+   *  description="Retorna un Json con la imagene seleccionada por le Id ",
+   *  path="/api/v1/imageproducts/{image_id}/{lang_id}",
+   *  security={{ "bearerAuth": {} }},
+   *  @OA\Parameter(
+   *    name="image_id",
+   *    in="path",
+   *    description="Id de la imagen",
+   *    required=true,
+   *    @OA\Schema(
+   *      default="1",
+   *      type="integer",
+   *    )
+   *  ),
+   *  @OA\Parameter(
+   *    name="lang_id",
+   *    in="path",
+   *    description="Id del lenguaje",
+   *    required=true,
+   *    @OA\Schema(
+   *      default="1",
+   *      type="integer",
+   *    )
+   *  ),
+   *  @OA\Response(
+   *    response=200,
+   *    description="Resultado de la Operación",
+   *    @OA\JsonContent(
+   *       @OA\Property(property="id", type="integer", example="1"),
+   *       @OA\Property(property="name", type="string", example="imagen"),
+   *    )
+   *  ),
+   *  @OA\Response(
+   *    response=422,
+   *    description="Estado Invalido de la Operación",
+   *    @OA\JsonContent(
+   *       @OA\Property(property="message", type="string", example="Los datos son incorrectos."),
+   *       @OA\Property(property="errors", type="string", example="..."),
+   *    )
+   *  )
+   * )
+  */
   public function showOne(  $image_id,$lang_id)
   {    	
     $image_id = DB::table('imageproducts')
@@ -125,18 +123,15 @@ class ImageproductsController extends Controller
       ->where('texts_imageproducts.language_id', $lang_id)
       ->where('imageproducts.id', $image_id)
       ->get();
-      if(!count($image_id) > 0){
-        $response['status'] = Response::HTTP_NOT_FOUND;
-        $response['data'] = 'No existe esta imagen';
+    if(!count($image_id) > 0){
+      $response['status'] = Response::HTTP_NOT_FOUND;
+      $response['data'] = 'No existe esta imagen';
 
-      }else{
-        $response['status'] = Response::HTTP_OK;
-        $response['data'] = $image_id;
-      }
-
-      
-      return response()->json($response, $response['status']);  
-
+    }else{
+      $response['status'] = Response::HTTP_OK;
+      $response['data'] = $image_id;
+    }    
+    return response()->json($response, $response['status']);  
   }
 
   /**
@@ -144,7 +139,7 @@ class ImageproductsController extends Controller
      *  tags={"Imagenes"},
      *  summary="Devuelve todas las imagenes por categoria",
      *  description="Retorna un Json con los las imagenes dependiendo la categoria ",
-     *  path="/api/v1/imageproducts/imageproduct_category/{category_id}/{lang_id}",
+     *  path="/api/v1/imageproducts/category/{category_id}/{lang_id}",
      *  security={{ "bearerAuth": {} }},
      *  @OA\Parameter(
      *    name="category_id",
@@ -183,12 +178,11 @@ class ImageproductsController extends Controller
      *    )
      *  )
      * )
-     */
+  */
 
   // Consultar ImagenProduct por Id de Categoría
   public function categoryId($category_id, $lang_id)
   { 
-    
     $images = DB::table('imageproducts')
       ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
       ->join('imageproduct_category', 'imageproduct_category.imageproduct_id', '=', 'imageproducts.id')
@@ -196,18 +190,70 @@ class ImageproductsController extends Controller
        ->where('texts_imageproducts.language_id', $lang_id)
       ->where('imageproduct_category.category_id', $category_id)
       ->get();
-      if(!count($images) > 0){
-        $response['status'] = Response::HTTP_NOT_FOUND;
-        $response['data'] = 'No existe esta categoria';
+    if(!count($images) > 0){
+      $response['status'] = Response::HTTP_NOT_FOUND;
+      $response['data'] = 'No existe esta categoria';
 
-      }else{
-        $response['status'] = Response::HTTP_OK;
-        $response['data'] = $images;
-      }
-       
+    }else{
+      $response['status'] = Response::HTTP_OK;
+      $response['data'] = $images;
+    }       
     return response()->json($response, $response['status']);
   }
 
+  /**
+   * @OA\Get(
+   *  tags={"Imagenes"},
+   *  summary="Devuelve todas las imagenes filtrando el lenguaje",
+   *  description="Retorna un Json con los titulos de las imagenes filtradas por lenguaje",
+   *  path="/api/v1/imageproducts/search",
+   *  security={{ "bearerAuth": {} }},
+   *  @OA\Parameter(
+   *    name="lenguage",
+   *    in="query",
+   *    description="ID del Lenguage",
+   *    required=true,
+   *    @OA\Schema(
+   *      default="1",
+   *      type="integer",
+   *    )
+   *  ),
+   *  @OA\Parameter(
+   *    name="keyword",
+   *    in="query",
+   *    description="Frase clave",
+   *    @OA\Schema(
+   *      default="casa",
+   *      type="string",
+   *    )
+   *  ),
+   *  @OA\Parameter(
+   *    name="category",
+   *    in="query",
+   *    description="ID de la Categoria",
+   *    @OA\Schema(
+   *      default="1",
+   *      type="integer",
+   *    )
+   *  ),
+   *  @OA\Response(
+   *    response=200,
+   *    description="Resultado de la Operación",
+   *    @OA\JsonContent(
+   *       @OA\Property(property="status", type="integer", example="200"),
+   *       @OA\Property(property="title de la imagen", type="varchar", example="String")
+   *    )
+   *  ),
+   *  @OA\Response(
+   *    response=422,
+   *    description="Estado Invalido de la Operación",
+   *    @OA\JsonContent(
+   *       @OA\Property(property="message", type="string", example="Lenguaje no existe."),
+   *       @OA\Property(property="errors", type="string", example="..."),
+   *    )
+   *  )
+   * )
+  */
   // Consultar ImagenProduct modalidad Search
   public function search(Request $request)
   {    	

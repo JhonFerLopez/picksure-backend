@@ -29,7 +29,7 @@ class UserController extends Controller
   }
    /**
      * @OA\Get(
-     *  tags={"Likes"},
+     *  tags={"User"},
      *  summary="Devuelve todos los likes realizados por un usuario",
      *  description="Retorna un Json con todos los likes  realizados por un usuario a las imagenes filtrandolo por el idioma",
      *  path="/api/v1/user/like_imageproduct/{user_id}/{lang_id}",
@@ -143,7 +143,7 @@ class UserController extends Controller
 
   /**
      * @OA\Get(
-     *  tags={"Likes"},
+     *  tags={"User"},
      *  summary="Devuelve todos los likes realizados por un usuario",
      *  description="Retorna un Json con todos los likes  realizados por un usuario a las categorias filtrandolo por el lenguaje",
      *  path="/api/v1/user/like_category/{user_id}/{lang_id}",
@@ -208,6 +208,4 @@ class UserController extends Controller
     return response()->json($response, $response['status']);
     
   }
-
-  
 }

@@ -9,12 +9,75 @@ use Illuminate\Support\Facades\Hash;
 
 class QualifyController extends Controller
 {
+
+  /**
+   *  @OA\Get(
+   *  tags={"Qualify"},
+   *  summary="Devuelve la calificacione del usuario",
+   *  description="Retorna un Json con la calificacion del usuario",
+   *  path="/api/v1/qualify",
+   *  security={{ "bearerAuth": {} }},
+   *  @OA\Response(
+   *    response=200,
+   *    description="Resultado de la Operación",
+   *    @OA\JsonContent(
+   *       @OA\Property(property="id", type="integer", example="1"),
+   *       @OA\Property(property="name", type="string", example="Nunca"),
+   *       @OA\Property(property="value", type="string", example="6"),
+   *       @OA\Property(property="option", type="string", example="month"),
+   *    )
+   *  ),
+   *  @OA\Response(
+   *    response=422,
+   *    description="Estado Invalido de la Operación",
+   *    @OA\JsonContent(
+   *       @OA\Property(property="message", type="string", example="Los datos son incorrectos."),
+   *       @OA\Property(property="errors", type="string", example="..."),
+   *    )
+   *  )
+   * )
+  */
   public function index(Request $request)
   {    	
     $qualify = QualificationOption::select('id', 'name', 'value', 'option')->get();
     return response()->json($qualify, 200);
   }
 
+  /**
+   *  @OA\Get(
+   *  tags={"Qualify"},
+   *  summary="Devuelve la calificacione del usuario",
+   *  description="Retorna un Json con la calificacion del usuario",
+   *  path="/api/v1/qualify/{user_id}",
+   *  security={{ "bearerAuth": {} }},
+   *  @OA\Parameter(
+   *    name="user_id",
+   *    in="path",
+   *    description="Id del Usuario",
+   *    required=true,
+   *    @OA\Schema(
+   *      default="1",
+   *      type="integer",
+   *    )
+   *  ),
+   *  @OA\Response(
+   *    response=200,
+   *    description="Resultado de la Operación",
+   *    @OA\JsonContent(
+   *       @OA\Property(property="error", type="boolean", example="true"),
+   *       @OA\Property(property="fecha", type="string", example="2124-03-17"),
+   *    )
+   *  ),
+   *  @OA\Response(
+   *    response=422,
+   *    description="Estado Invalido de la Operación",
+   *    @OA\JsonContent(
+   *       @OA\Property(property="message", type="string", example="Los datos son incorrectos."),
+   *       @OA\Property(property="errors", type="string", example="..."),
+   *    )
+   *  )
+   * )
+  */
   //** Preguntar si debe calificar la app */
   public function rateApp(Request $request, $id)
   {    	
@@ -33,6 +96,54 @@ class QualifyController extends Controller
     return response()->json($result, 200);
   }
 
+  /**
+   * @OA\POST(
+   *  tags={"Qualify"},
+   *  summary="Crear calificacion del usuario",
+   *  description="Creacion de la calificacion del usuario",
+   *  path="/api/v1/qualify/{user_id}",
+   *  @OA\Parameter(
+   *    name="user_id",
+   *    in="path",
+   *    description="Id del Usuario",
+   *    required=true,
+   *    @OA\Schema(
+   *      default="1",
+   *      type="integer",
+   *    )
+   *  ),
+   *  @OA\RequestBody(
+   *      @OA\MediaType(
+   *          mediaType="application/raw",
+   *          @OA\Schema(
+   *             required={"email","password"},
+   *             @OA\Property(property="id", type="integer", example="1"),
+   *             @OA\Property(property="name", type="string", example="Mas Tarde"),
+   *             @OA\Property(property="value", type="integer", example="1"),
+   *             @OA\Property(property="option", type="string", example="month"),
+   *          )
+   *      ),
+   *  ),
+   *  @OA\Response(
+   *    response=200,
+   *    description="Resultado de la Operación",
+   *    @OA\JsonContent(
+   *       @OA\Property(property="id", type="integer", example="1"),
+   *       @OA\Property(property="name", type="string", example="Mas Tarde"),
+   *       @OA\Property(property="value", type="integer", example="1"),
+   *       @OA\Property(property="option", type="string", example="month"),
+   *    )
+   *  ),
+   *  @OA\Response(
+   *    response=422,
+   *    description="Estado Invalido de la Operación",
+   *    @OA\JsonContent(
+   *       @OA\Property(property="message", type="string", example="Los datos son incorrectos."),
+   *       @OA\Property(property="errors", type="string", example="..."),
+   *    )
+   *  )
+   * )
+  */
   //** Guargar Calificación de la app por Usuario */
   public function createQualifyApp(Request $request, $id)
   {

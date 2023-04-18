@@ -429,14 +429,14 @@
                 ]
             }
         },
-        "/api/v1/imageproducts/imageproduct_category/{category_id}/{lang_id}": {
+        "/api/v1/imageproducts/category/{category_id}/{lang_id}": {
             "get": {
                 "tags": [
                     "Imagenes"
                 ],
                 "summary": "Devuelve todas las imagenes por categoria",
                 "description": "Retorna un Json con los las imagenes dependiendo la categoria ",
-                "operationId": "286998bbe65bdbac0a0720e3409737d4",
+                "operationId": "ffcbe48869a481a2689e3632e5d8db6f",
                 "parameters": [
                     {
                         "name": "category_id",
@@ -506,6 +506,328 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/api/v1/imageproducts/search": {
+            "get": {
+                "tags": [
+                    "Imagenes"
+                ],
+                "summary": "Devuelve todas las imagenes filtrando el lenguaje",
+                "description": "Retorna un Json con los titulos de las imagenes filtradas por lenguaje",
+                "operationId": "fe637420eedd04861251df96f321d4ff",
+                "parameters": [
+                    {
+                        "name": "lenguage",
+                        "in": "query",
+                        "description": "ID del Lenguage",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "description": "Frase clave",
+                        "schema": {
+                            "type": "string",
+                            "default": "casa"
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "ID de la Categoria",
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Lenguaje no existe."
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/qualify": {
+            "get": {
+                "tags": [
+                    "Qualify"
+                ],
+                "summary": "Devuelve la calificacione del usuario",
+                "description": "Retorna un Json con la calificacion del usuario",
+                "operationId": "5502a332d7e9f6a7b014388859773384",
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Nunca"
+                                        },
+                                        "value": {
+                                            "type": "string",
+                                            "example": "6"
+                                        },
+                                        "option": {
+                                            "type": "string",
+                                            "example": "month"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Los datos son incorrectos."
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/qualify/{user_id}": {
+            "get": {
+                "tags": [
+                    "Qualify"
+                ],
+                "summary": "Devuelve la calificacione del usuario",
+                "description": "Retorna un Json con la calificacion del usuario",
+                "operationId": "af504252348fb65013ed67f03de6daf7",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Id del Usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "fecha": {
+                                            "type": "string",
+                                            "example": "2124-03-17"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Los datos son incorrectos."
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Qualify"
+                ],
+                "summary": "Crear calificacion del usuario",
+                "description": "Creacion de la calificacion del usuario",
+                "operationId": "408e163cc5f6d7fe9cf6da5f7b9306a2",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Id del Usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/raw": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Mas Tarde"
+                                    },
+                                    "value": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "option": {
+                                        "type": "string",
+                                        "example": "month"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Mas Tarde"
+                                        },
+                                        "value": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "option": {
+                                            "type": "string",
+                                            "example": "month"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Los datos son incorrectos."
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/town/department/{idDepartment}": {
@@ -580,7 +902,7 @@
         "/api/v1/user/like_imageproduct/{user_id}/{lang_id}": {
             "get": {
                 "tags": [
-                    "Likes"
+                    "User"
                 ],
                 "summary": "Devuelve todos los likes realizados por un usuario",
                 "description": "Retorna un Json con todos los likes  realizados por un usuario a las imagenes filtrandolo por el idioma",
@@ -659,7 +981,7 @@
         "/api/v1/user/like_category/{user_id}/{lang_id}": {
             "get": {
                 "tags": [
-                    "Likes"
+                    "User"
                 ],
                 "summary": "Devuelve todos los likes realizados por un usuario",
                 "description": "Retorna un Json con todos los likes  realizados por un usuario a las categorias filtrandolo por el lenguaje",

@@ -59,7 +59,7 @@ Route::post('/qualify/{id}', [QualifyController::class, 'createQualifyApp']);
 //Images
 Route::middleware('auth:sanctum')->get('/imageproducts', [ImageproductsController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/imageproducts/{image_id}/{lang_id}', [ImageproductsController::class, 'showOne']); 
-Route::middleware('auth:sanctum')->get('/imageproducts/imageproduct_category/{category_id}/{lang_id}', [ImageproductsController::class, 'categoryId']);
+Route::middleware('auth:sanctum')->get('/imageproducts/category/{category_id}/{lang_id}', [ImageproductsController::class, 'categoryId']);
 Route::get('/imageproducts/search', [ImageproductsController::class, 'search']);
 
 Route::get('/greeting', function () {
