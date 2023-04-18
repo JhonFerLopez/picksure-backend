@@ -967,7 +967,7 @@
                 "tags": [
                     "Likes"
                 ],
-                "summary": "Elimina un like dado por un usuairo",
+                "summary": "Elimina un like dado por un usuario",
                 "description": "Elimina un like dado por un usuairo a una categoria",
                 "operationId": "1d5c7030a41143e467919d5d3a98f6f8",
                 "parameters": [
@@ -1130,9 +1130,29 @@
                 "operationId": "4aeb5a0e02adefe611edccec47ed351c",
                 "parameters": [
                     {
-                        "name": "user_id",
+                        "name": "Name",
                         "in": "path",
-                        "description": "Id del usuario",
+                        "description": "Nombre de usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "varchar",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "description": "Correo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "path",
+                        "description": "Contraseña",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -1194,8 +1214,8 @@
                 "tags": [
                     "Usuarios"
                 ],
-                "summary": "Elimina un  usuario",
-                "description": "Elimina un  usuario",
+                "summary": "Elimina un usuario",
+                "description": "Elimina un usuario",
                 "operationId": "d9a2257595155765870a80f3575dbde0",
                 "parameters": [
                     {
@@ -1259,13 +1279,13 @@
             }
         },
         "/api/v1/user/update_users/{user_id}": {
-            "get": {
+            "put": {
                 "tags": [
                     "Usuarios"
                 ],
-                "summary": "Muestra toda la informacion",
-                "description": "Muestra toda la informacion del usuario",
-                "operationId": "37d4f90517e897bc374ad44ac0350b35",
+                "summary": "Actualiza la información de un usuario",
+                "description": "Actualiza la información de un usuario seleccionado",
+                "operationId": "817bfd5c7427111bca3a74bfde120315",
                 "parameters": [
                     {
                         "name": "user_id",
@@ -1325,14 +1345,16 @@
                         "bearerAuth": []
                     }
                 ]
-            },
-            "put": {
+            }
+        },
+        "/api/v1/user/show_users/{user_id}": {
+            "get": {
                 "tags": [
                     "Usuarios"
                 ],
-                "summary": "Actualiza la información de un usuario",
-                "description": "Actualiza la información de un usuario seleccionado",
-                "operationId": "817bfd5c7427111bca3a74bfde120315",
+                "summary": "Muestra toda la informacion",
+                "description": "Muestra toda la informacion del usuario",
+                "operationId": "589a086ed88562e60716a951361cea8e",
                 "parameters": [
                     {
                         "name": "user_id",

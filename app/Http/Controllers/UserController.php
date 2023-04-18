@@ -394,9 +394,29 @@ class UserController extends Controller
      *  path="/api/v1/user/create_users/{user_id}",
      *  security={{ "bearerAuth": {} }},
      * * @OA\Parameter(
-     *    name="user_id",
+     *    name="Name",
      *    in="path",
-     *    description="Id del usuario",
+     *    description="Nombre de usuario",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="varchar",
+     *    )
+     *  ),
+     * * @OA\Parameter(
+     *    name="email",
+     *    in="path",
+     *    description="Correo",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     *  * * @OA\Parameter(
+     *    name="password",
+     *    in="path",
+     *    description="Contraseña",
      *    required=true,
      *    @OA\Schema(
      *      default="1",
@@ -421,9 +441,16 @@ class UserController extends Controller
      *  )
      * )
      */
-  public function CreateUser($user_id){
+  public function CreateUser(Request $request ,$user_id)
+  {
+    $user = new User;
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->password = bcrypt($request->password);
+    $user->save();
 
-  }
+    return redirect('/home');
+}
 
  /**
      * @OA\Delete(
@@ -508,7 +535,7 @@ public function UpdateUser($user_id){
      *  tags={"Usuarios"},
      *  summary="Muestra toda la informacion",
      *  description="Muestra toda la informacion del usuario",
-     *  path="/api/v1/user/update_users/{user_id}",
+     *  path="/api/v1/user/show_users/{user_id}",
      *  security={{ "bearerAuth": {} }},
      * * @OA\Parameter(
      *    name="user_id",
@@ -532,7 +559,7 @@ public function UpdateUser($user_id){
      *    response=422,
      *    description="Estado Invalido de la Operación",
      *    @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", example="No esxite like"),
+     *       @OA\Property(property="message", type="string", example="No esxite este usuario"),
      *       @OA\Property(property="errors", type="string", example="..."),
      *    )
      *  )
@@ -540,6 +567,18 @@ public function UpdateUser($user_id){
      */
   public function ShowInfoUser($user_id){
 
+    $$user_id = DB::table('users')
+      ->select('users.name', 'users.lastname', 'users.email', 'users.created_at','users.avatar')
+      ->where('users.id', $user_id)
+      ->get();
+      if(!count($$user_id) > 0){
+        $response['status'] = Response::HTTP_NOT_FOUND;
+        $response['data'] = 'Este usuario no existe';
+      }else{
+        $response['status'] = Response::HTTP_OK;
+        $response['data'] = $$user_id;
+      }
+      return response()->json($response, $response['status']); 
   }
 
   
