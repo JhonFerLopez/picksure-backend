@@ -72,26 +72,24 @@ class UserController extends Controller
      *  )
      * )
      */
-  public function showLikeImageproduct($user_id,$lang_id)
-  {
-    $user_id = DB::table('user_like_imageproduct')
-      ->join('imageproducts', 'imageproducts.id', '=', 'user_like_imageproduct.imageproduct_id')
-      ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
-      ->select('user_like_imageproduct.user_id', 'imageproducts.id','texts_imageproducts.language_id','texts_imageproducts.title', 'texts_imageproducts.description')
-      ->where('user_like_imageproduct.user_id', $user_id)
-      ->where('texts_imageproducts.language_id', $lang_id)
-      
-      ->get();
-     if(!count($user_id) > 0){
-      $response['status'] = Response::HTTP_NOT_FOUND;
-      $response['data'] = 'Este usuario no le ha dado Like a ninguna imagen';
-
-    }else{
-      $response['status'] = Response::HTTP_OK;
-      $response['data'] = $user_id;
+    public function showLikeImageproduct($user_id,$lang_id)
+    {
+      $user_id = DB::table('user_like_imageproduct')
+        ->join('imageproducts', 'imageproducts.id', '=', 'user_like_imageproduct.imageproduct_id')
+        ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
+        ->select('user_like_imageproduct.user_id', 'imageproducts.id','texts_imageproducts.language_id','texts_imageproducts.title', 'texts_imageproducts.description')
+        ->where('user_like_imageproduct.user_id', $user_id)
+        ->where('texts_imageproducts.language_id', $lang_id)
+        ->get();
+      if(!count($user_id) > 0){
+        $response['status'] = Response::HTTP_NOT_FOUND;
+        $response['data'] = 'Este usuario no exite o no a dado like a ninguna imagen dentro del lenguaje especificado';
+       }else{
+        $response['status'] = Response::HTTP_OK;
+        $response['data'] = $user_id;
+      }
+      return response()->json($response, $response['status']);
     }
-    return response()->json($response, $response['status']);
-  }
 
   /**Delete Like ImageProduct*/
   public function deleteLikeImageproduct(Request $request)
@@ -109,9 +107,54 @@ class UserController extends Controller
     return response()->json('Deleted Successfully', 200);
   }
 
-  /**Create Like Category*/
+ /**
+     * @OA\Post(
+     *  tags={"Likes"},
+     *  summary="Crea like que un usuario de a las categorias",
+     *  description="Crea like que un usuario de a las categorias",
+     *  path="/api/v1/user/like_category/{user_id}/{category_id}",
+     *  security={{ "bearerAuth": {} }},
+     * * @OA\Parameter(
+     *    name="user_id",
+     *    in="path",
+     *    description="Id del usuario",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * * @OA\Parameter(
+     *    name="category_id",
+     *    in="path",
+     *    description="Id de la categoria",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Resultado de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="integer", example="200"),
+     *       @OA\Property(property="title de la imagen", type="varchar", example="String")
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Estado Invalido de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="No esxite like"),
+     *       @OA\Property(property="errors", type="string", example="..."),
+     *    )
+     *  )
+     * )
+     */
   public function createLikeCategory(Request $request)
   {
+    
     DB::table('user_like_category')
     ->where('user_id', $request->user_id)  
     ->delete();
@@ -124,6 +167,8 @@ class UserController extends Controller
     }    
     return response()->json($likeCategory, 200);
   }
+
+
   /**Delete Like Category*/
   public function deleteLikeCategory(Request $request)
   {
@@ -199,7 +244,7 @@ class UserController extends Controller
       ->get();
      if(!count($user_id) > 0){
       $response['status'] = Response::HTTP_NOT_FOUND;
-      $response['data'] = 'Este usuario no exite o aun no le ha dado Like a ninguna categoria';
+      $response['data'] = 'Este usuario no exite o no a dado like a ninguna categoria dentro del lenguaje especificado';
 
     }else{
       $response['status'] = Response::HTTP_OK;
@@ -208,6 +253,8 @@ class UserController extends Controller
     return response()->json($response, $response['status']);
     
   }
+
+  
 
   
 }

@@ -50,26 +50,25 @@ class ImageproductsController extends Controller
      * )
      */
 		public function index(Request $request)
-  {  
-      	
+    {  	
       if(!isset($request->lenguage)){
-        return response()->json(array('data' => 'No existe el parametro id Lenguage'), 502);
+          return response()->json(array('data' => 'No existe el parametro id Lenguage'), 502);
       }
-    $idLenguage = Language::where('id', $request->lenguage)->first();
-    if($idLenguage){
-      $image = DB::table('imageproducts')
-      ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
-      ->select('imageproducts.id', 'texts_imageproducts.language_id','imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description')
-      ->where('texts_imageproducts.language_id', '=', $request->lenguage)
-      ->get();
-      $response['status'] = 200;
-      $response['data'] = $image; 
-    }	else {
-      $response['status'] = 402;
-      $response['data'] = 'Lenguaje no existe.';
-    }
-    return response()->json($response, $response['status']);
-  } 
+      $idLenguage = Language::where('id', $request->lenguage)->first();
+      if($idLenguage){
+        $image = DB::table('imageproducts')
+        ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
+        ->select('imageproducts.id', 'texts_imageproducts.language_id','imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description')
+        ->where('texts_imageproducts.language_id', '=', $request->lenguage)
+        ->get();
+        $response['status'] = 200;
+        $response['data'] = $image; 
+      }	else {
+        $response['status'] = 402;
+        $response['data'] = 'Lenguaje no existe.';
+      }
+      return response()->json($response, $response['status']);
+    } 
    /**
      *  @OA\Get(
      *  tags={"Imagenes"},
@@ -117,9 +116,9 @@ class ImageproductsController extends Controller
      */
 
 
-  public function showOne(  $image_id,$lang_id)
-  {    	
-    $image_id = DB::table('imageproducts')
+    public function showOne(  $image_id,$lang_id)
+    {    	
+      $image_id = DB::table('imageproducts')
       ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
       ->select('imageproducts.id', 'texts_imageproducts.language_id','texts_imageproducts.title', 'texts_imageproducts.description','imageproducts.img_url')
       ->where('texts_imageproducts.language_id', $lang_id)
@@ -128,16 +127,12 @@ class ImageproductsController extends Controller
       if(!count($image_id) > 0){
         $response['status'] = Response::HTTP_NOT_FOUND;
         $response['data'] = 'Esta imagen no existe o no existe dentro del lenguaje especificado';
-
       }else{
         $response['status'] = Response::HTTP_OK;
         $response['data'] = $image_id;
       }
-
-      
-      return response()->json($response, $response['status']);  
-
-  }
+      return response()->json($response, $response['status']); 
+    }
 
   /**
      * @OA\Get(
@@ -186,27 +181,24 @@ class ImageproductsController extends Controller
      */
 
   // Consultar ImagenProduct por Id de Categoría
-  public function categoryId($category_id, $lang_id)
-  { 
-    
-    $images = DB::table('imageproducts')
+    public function categoryId($category_id, $lang_id)
+    {  
+      $images = DB::table('imageproducts')
       ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
       ->join('imageproduct_category', 'imageproduct_category.imageproduct_id', '=', 'imageproducts.id')
       ->select('imageproducts.id', 'texts_imageproducts.language_id', 'texts_imageproducts.description','imageproducts.img_url')
-       ->where('texts_imageproducts.language_id', $lang_id)
+      ->where('texts_imageproducts.language_id', $lang_id)
       ->where('imageproduct_category.category_id', $category_id)
       ->get();
       if(!count($images) > 0){
         $response['status'] = Response::HTTP_NOT_FOUND;
         $response['data'] = 'Esta categoria no existe o no existe dentro del lenguaje especificado';
-
       }else{
         $response['status'] = Response::HTTP_OK;
         $response['data'] = $images;
-      }
-       
-    return response()->json($response, $response['status']);
-  }
+      } 
+      return response()->json($response, $response['status']);
+    }
 
   // Consultar ImagenProduct modalidad Search
   public function search(Request $request)
