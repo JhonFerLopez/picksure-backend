@@ -20,7 +20,51 @@ class UserController extends Controller
     $user = User::all();
     return response()->json($user, 200);
   }
-
+/**
+     * @OA\Post(
+     *  tags={"Likes"},
+     *  summary="Crea like que un usuario de a las imagenes",
+     *  description="Crea like que un usuario de a las imagenes",
+     *  path="/api/v1/user/like_imageproduct{user_id}/{img_id}",
+     *  security={{ "bearerAuth": {} }},
+     * * @OA\Parameter(
+     *    name="user_id",
+     *    in="path",
+     *    description="Id del usuario",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * * @OA\Parameter(
+     *    name="img_id",
+     *    in="path",
+     *    description="Id de la imagen",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Resultado de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="integer", example="200"),
+     *       @OA\Property(property="title de la imagen", type="varchar", example="String")
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Estado Invalido de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="No esxite like"),
+     *       @OA\Property(property="errors", type="string", example="..."),
+     *    )
+     *  )
+     * )
+     */
   /**Create Like ImageProduct*/
   public function createLikeImageproduct(Request $request)
   {
@@ -90,7 +134,51 @@ class UserController extends Controller
       }
       return response()->json($response, $response['status']);
     }
-
+/**
+     * @OA\Delete(
+     *  tags={"Likes"},
+     *  summary="Elimina un like dado por un usuairo",
+     *  description="Elimina un like dado por un usuairo a una imagen",
+     *  path="/api/v1/user/like_imageproducty",
+     *  security={{ "bearerAuth": {} }},
+     * * @OA\Parameter(
+     *    name="user_id",
+     *    in="path",
+     *    description="Id del usuario",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * * @OA\Parameter(
+     *    name="category_id",
+     *    in="path",
+     *    description="Id de la imagen",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Resultado de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="integer", example="200"),
+     *       @OA\Property(property="title de la imagen", type="varchar", example="String")
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Estado Invalido de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="No esxite like"),
+     *       @OA\Property(property="errors", type="string", example="..."),
+     *    )
+     *  )
+     * )
+     */
   /**Delete Like ImageProduct*/
   public function deleteLikeImageproduct(Request $request)
   {
@@ -168,7 +256,51 @@ class UserController extends Controller
     return response()->json($likeCategory, 200);
   }
 
-
+/**
+     * @OA\Delete(
+     *  tags={"Likes"},
+     *  summary="Elimina un like dado por un usuario",
+     *  description="Elimina un like dado por un usuairo a una categoria",
+     *  path="/api/v1/user/like_category",
+     *  security={{ "bearerAuth": {} }},
+     * * @OA\Parameter(
+     *    name="user_id",
+     *    in="path",
+     *    description="Id del usuario",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * * @OA\Parameter(
+     *    name="category_id",
+     *    in="path",
+     *    description="Id de la categoria",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Resultado de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="integer", example="200"),
+     *       @OA\Property(property="title de la imagen", type="varchar", example="String")
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Estado Invalido de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="No esxite like"),
+     *       @OA\Property(property="errors", type="string", example="..."),
+     *    )
+     *  )
+     * )
+     */
   /**Delete Like Category*/
   public function deleteLikeCategory(Request $request)
   {
@@ -254,7 +386,161 @@ class UserController extends Controller
     
   }
 
-  
+  /**
+     * @OA\Post(
+     *  tags={"Usuarios"},
+     *  summary="Crea un nuevo usuario",
+     *  description="Crea un nuevo usuario en el sistema",
+     *  path="/api/v1/user/create_users/{user_id}",
+     *  security={{ "bearerAuth": {} }},
+     * * @OA\Parameter(
+     *    name="user_id",
+     *    in="path",
+     *    description="Id del usuario",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Resultado de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="integer", example="200"),
+     *       @OA\Property(property="title de la imagen", type="varchar", example="String")
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Estado Invalido de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="No esxite like"),
+     *       @OA\Property(property="errors", type="string", example="..."),
+     *    )
+     *  )
+     * )
+     */
+  public function CreateUser($user_id){
+
+  }
+
+ /**
+     * @OA\Delete(
+     *  tags={"Usuarios"},
+     *  summary="Elimina un usuario",
+     *  description="Elimina un usuario",
+     *  path="/api/v1/user/delete_users/{user_id}",
+     *  security={{ "bearerAuth": {} }},
+     * * @OA\Parameter(
+     *    name="user_id",
+     *    in="path",
+     *    description="Id del usuario",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Resultado de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="integer", example="200"),
+     *       @OA\Property(property="title de la imagen", type="varchar", example="String")
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Estado Invalido de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="No esxite like"),
+     *       @OA\Property(property="errors", type="string", example="..."),
+     *    )
+     *  )
+     * )
+     */
+ public function DeleteUser($user_id){
+
+  }
+
+ /**
+     * @OA\Put(
+     *  tags={"Usuarios"},
+     *  summary="Actualiza la información de un usuario",
+     *  description="Actualiza la información de un usuario seleccionado",
+     *  path="/api/v1/user/update_users/{user_id}",
+     *  security={{ "bearerAuth": {} }},
+     * * @OA\Parameter(
+     *    name="user_id",
+     *    in="path",
+     *    description="Id del usuario",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Resultado de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="integer", example="200"),
+     *       @OA\Property(property="title de la imagen", type="varchar", example="String")
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Estado Invalido de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="No esxite like"),
+     *       @OA\Property(property="errors", type="string", example="..."),
+     *    )
+     *  )
+     * )
+     */
+public function UpdateUser($user_id){
+
+  }
+
+/**
+     * @OA\Get(
+     *  tags={"Usuarios"},
+     *  summary="Muestra toda la informacion",
+     *  description="Muestra toda la informacion del usuario",
+     *  path="/api/v1/user/update_users/{user_id}",
+     *  security={{ "bearerAuth": {} }},
+     * * @OA\Parameter(
+     *    name="user_id",
+     *    in="path",
+     *    description="Id del usuario",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
+     *    )
+     *  ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Resultado de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="integer", example="200"),
+     *       @OA\Property(property="title de la imagen", type="varchar", example="String")
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Estado Invalido de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="No esxite like"),
+     *       @OA\Property(property="errors", type="string", example="..."),
+     *    )
+     *  )
+     * )
+     */
+  public function ShowInfoUser($user_id){
+
+  }
 
   
 }

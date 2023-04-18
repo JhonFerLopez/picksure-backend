@@ -508,6 +508,75 @@
                 ]
             }
         },
+        "/api/v1//qualify/{id}": {
+            "post": {
+                "tags": [
+                    "Qualify"
+                ],
+                "summary": "Crea Calificación de la app por el Usuario",
+                "description": "Crea la calificacion dada por un usuario a la app",
+                "operationId": "8db617ad232c8a6e1529e0017c61666e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No esxite like"
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/town/department/{idDepartment}": {
             "get": {
                 "tags": [
@@ -577,6 +646,85 @@
                 ]
             }
         },
+        "/api/v1/user/like_imageproduct{user_id}/{img_id}": {
+            "post": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Crea like que un usuario de a las imagenes",
+                "description": "Crea like que un usuario de a las imagenes",
+                "operationId": "207f42007929ffb506ded67c5be6b4a9",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Id del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "img_id",
+                        "in": "path",
+                        "description": "Id de la imagen",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No esxite like"
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/user/like_imageproduct/{user_id}/{lang_id}": {
             "get": {
                 "tags": [
@@ -600,6 +748,85 @@
                         "name": "lang_id",
                         "in": "path",
                         "description": "Id del lenguaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No esxite like"
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/user/like_imageproducty": {
+            "delete": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Elimina un like dado por un usuairo",
+                "description": "Elimina un like dado por un usuairo a una imagen",
+                "operationId": "d40842b24cc2511783947349c359f0a8",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Id del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "description": "Id de la imagen",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -735,6 +962,85 @@
                 ]
             }
         },
+        "/api/v1/user/like_category": {
+            "delete": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Elimina un like dado por un usuairo",
+                "description": "Elimina un like dado por un usuairo a una categoria",
+                "operationId": "1d5c7030a41143e467919d5d3a98f6f8",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Id del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "description": "Id de la categoria",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No esxite like"
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/user/like_category/{user_id}/{lang_id}": {
             "get": {
                 "tags": [
@@ -758,6 +1064,280 @@
                         "name": "lang_id",
                         "in": "path",
                         "description": "Id del lenguaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No esxite like"
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/user/create_users/{user_id}": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Crea un nuevo usuario",
+                "description": "Crea un nuevo usuario en el sistema",
+                "operationId": "4aeb5a0e02adefe611edccec47ed351c",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Id del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No esxite like"
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/user/delete_users/{user_id}": {
+            "delete": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Elimina un  usuario",
+                "description": "Elimina un  usuario",
+                "operationId": "d9a2257595155765870a80f3575dbde0",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Id del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No esxite like"
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/user/update_users/{user_id}": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Muestra toda la informacion",
+                "description": "Muestra toda la informacion del usuario",
+                "operationId": "37d4f90517e897bc374ad44ac0350b35",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Id del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No esxite like"
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Actualiza la información de un usuario",
+                "description": "Actualiza la información de un usuario seleccionado",
+                "operationId": "817bfd5c7427111bca3a74bfde120315",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Id del usuario",
                         "required": true,
                         "schema": {
                             "type": "integer",

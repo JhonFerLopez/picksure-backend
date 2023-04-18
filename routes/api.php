@@ -39,7 +39,10 @@ Route::delete('/user/like_category', [UserController::class, 'deleteLikeCategory
 Route::post('/user/like_imageproduct', [UserController::class, 'createLikeImageproduct']);
 Route::middleware('auth:sanctum')->get('/user/like_imageproduct/{user_id}/{lang_id}', [UserController::class, 'showLikeImageproduct']);
 Route::delete('/user/like_imageproduct', [UserController::class, 'deleteLikeImageproduct']);
-
+Route::delete('/user/create_users/{user_id}', [UserController::class, 'CreateUser']);
+Route::delete('/user/delete_users/{user_id}', [UserController::class, 'DeleteUser']);
+Route::delete('/user/Update_users/{user_id}', [UserController::class, 'UpdateUser']);
+Route::delete('/user/Show_users/{user_id}', [UserController::class, 'ShowInfoUser']);
 //Categories
 Route::get('/categories', [Category::class, 'index']);
 Route::get('/categories/{prefijo}', [Category::class, 'idioma']);
