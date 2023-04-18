@@ -656,6 +656,85 @@
                 ]
             }
         },
+        "/api/v1/user/like_category/{user_id}/{category_id}": {
+            "post": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Crea like que un usuario de a las categorias",
+                "description": "Crea like que un usuario de a las categorias",
+                "operationId": "9ebf7488eb07af8eb892818f5e5f74de",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Id del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "description": "Id de la categoria",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Estado Invalido de la Operación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No esxite like"
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/user/like_category/{user_id}/{lang_id}": {
             "get": {
                 "tags": [

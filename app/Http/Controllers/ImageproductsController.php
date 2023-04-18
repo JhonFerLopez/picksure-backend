@@ -59,7 +59,7 @@ class ImageproductsController extends Controller
     if($idLenguage){
       $image = DB::table('imageproducts')
       ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
-      ->select('imageproducts.id', 'imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description')
+      ->select('imageproducts.id', 'texts_imageproducts.language_id','imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description')
       ->where('texts_imageproducts.language_id', '=', $request->lenguage)
       ->get();
       $response['status'] = 200;
@@ -127,7 +127,7 @@ class ImageproductsController extends Controller
       ->get();
       if(!count($image_id) > 0){
         $response['status'] = Response::HTTP_NOT_FOUND;
-        $response['data'] = 'No existe esta imagen';
+        $response['data'] = 'Esta imagen no existe o no existe dentro del lenguaje especificado';
 
       }else{
         $response['status'] = Response::HTTP_OK;
@@ -198,7 +198,7 @@ class ImageproductsController extends Controller
       ->get();
       if(!count($images) > 0){
         $response['status'] = Response::HTTP_NOT_FOUND;
-        $response['data'] = 'No existe esta categoria';
+        $response['data'] = 'Esta categoria no existe o no existe dentro del lenguaje especificado';
 
       }else{
         $response['status'] = Response::HTTP_OK;
