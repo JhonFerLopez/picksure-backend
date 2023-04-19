@@ -25,7 +25,7 @@ class UserController extends Controller
      *  tags={"Likes"},
      *  summary="Crea like que un usuario de a las imagenes",
      *  description="Crea like que un usuario de a las imagenes",
-     *  path="/api/v1/user/like_imageproduct{user_id}/{img_id}",
+     *  path="/api/v1/user/like_imageproduct/{user_id}/{img_id}",
      *  security={{ "bearerAuth": {} }},
      * * @OA\Parameter(
      *    name="user_id",
@@ -66,9 +66,9 @@ class UserController extends Controller
      * )
      */
   /**Create Like ImageProduct*/
-  public function createLikeImageproduct(Request $request)
+  public function createLikeImageproduct(Request $request,$user_id, $img_id)
   {
-    $likeImageproduct = UserLikeImageproduct::create($request->all());
+    $likeImageproduct = UserLikeImageproduct::create($request->$user_id);
     return response()->json($likeImageproduct, 200);
   }
    /**
@@ -139,7 +139,7 @@ class UserController extends Controller
      *  tags={"Likes"},
      *  summary="Elimina un like dado por un usuairo",
      *  description="Elimina un like dado por un usuairo a una imagen",
-     *  path="/api/v1/user/like_imageproducty",
+     *  path="/api/v1/user/like_imageproduct/{user_id}/{img_id}",
      *  security={{ "bearerAuth": {} }},
      * * @OA\Parameter(
      *    name="user_id",
@@ -152,9 +152,9 @@ class UserController extends Controller
      *    )
      *  ),
      * * @OA\Parameter(
-     *    name="category_id",
+     *    name="img_id",
      *    in="path",
-     *    description="Id de la imagen",
+     *    description="Id de la imagen a la que desea eliminarle el like",
      *    required=true,
      *    @OA\Schema(
      *      default="1",
@@ -173,26 +173,20 @@ class UserController extends Controller
      *    response=422,
      *    description="Estado Invalido de la Operación",
      *    @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", example="No esxite like"),
+     *       @OA\Property(property="message", type="string", example="Like eliminado"),
      *       @OA\Property(property="errors", type="string", example="..."),
      *    )
      *  )
      * )
      */
   /**Delete Like ImageProduct*/
-  public function deleteLikeImageproduct(Request $request)
+  public function deleteLikeImageproduct($user_id, $img_id)
   {
-    $this->validate($request, [
-      'user_id' => 'required',
-      'imageproduct_id' => 'required'
-    ]);
-
-    $likeImageproduct = DB::table('user_like_imageproduct')
-    ->where('user_id', $request->user_id)  
-    ->where('imageproduct_id', $request->imageproduct_id)
+    $delete = DB::table('user_like_imageproduct')
+    ->where('user_id', $user_id)  
+    ->where('imageproduct_id', $img_id )
     ->delete();
-
-    return response()->json('Deleted Successfully', 200);
+    return response()->json('Se elimino este like', 200);
   }
 
  /**
@@ -261,7 +255,7 @@ class UserController extends Controller
      *  tags={"Likes"},
      *  summary="Elimina un like dado por un usuario",
      *  description="Elimina un like dado por un usuairo a una categoria",
-     *  path="/api/v1/user/like_category",
+     *  path="/api/v1/user/like_category/{user_id}/{category_id}",
      *  security={{ "bearerAuth": {} }},
      * * @OA\Parameter(
      *    name="user_id",
@@ -276,7 +270,7 @@ class UserController extends Controller
      * * @OA\Parameter(
      *    name="category_id",
      *    in="path",
-     *    description="Id de la categoria",
+     *    description="Id de la categoria a la cual desea eliminar el like",
      *    required=true,
      *    @OA\Schema(
      *      default="1",
@@ -295,26 +289,21 @@ class UserController extends Controller
      *    response=422,
      *    description="Estado Invalido de la Operación",
      *    @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", example="No esxite like"),
+     *       @OA\Property(property="message", type="string", example="Se eliminó el like a esta categoria"),
      *       @OA\Property(property="errors", type="string", example="..."),
      *    )
      *  )
      * )
      */
   /**Delete Like Category*/
-  public function deleteLikeCategory(Request $request)
+  public function deleteLikeCategory($user_id,$category_id )
   {
-    $this->validate($request, [
-      'user_id' => 'required',
-      'category_id' => 'required'
-    ]);
-
-    $likeCategory = DB::table('user_like_category')
-    ->where('user_id', $request->user_id)  
-    ->where('category_id', $request->category_id)
+    $delete = DB::table('user_like_category')
+    ->where('user_id', $user_id)  
+    ->where('category_id', $category_id)
     ->delete();
 
-    return response()->json('Deleted Successfully', 200);
+    return response()->json('Se elimino este like', 200);
   }
   /**Select Like Category*/
 
@@ -481,7 +470,7 @@ class UserController extends Controller
      *    response=422,
      *    description="Estado Invalido de la Operación",
      *    @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", example="No esxite like"),
+     *       @OA\Property(property="message", type="string", example="Se eliminó este usuario"),
      *       @OA\Property(property="errors", type="string", example="..."),
      *    )
      *  )
@@ -489,6 +478,11 @@ class UserController extends Controller
      */
  public function DeleteUser($user_id){
 
+  $delete = DB::table('users')
+  ->where('id', $user_id)  
+  ->delete();
+
+  return response()->json('Usuario eliminado', 200);
   }
 
  /**
