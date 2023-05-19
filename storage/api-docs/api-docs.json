@@ -545,7 +545,7 @@
                 ]
             }
         },
-        "/api/v1/imageproducts/filter/search/{language}": {
+        "/api/v1/imageproducts/search": {
             "get": {
                 "tags": [
                     "Imagenes"
@@ -555,9 +555,9 @@
                 "operationId": "bff93ec48d46c503ef015fb817671bcb",
                 "parameters": [
                     {
-                        "name": "language",
-                        "in": "path",
-                        "description": "Prefijo del idioma",
+                        "name": "lenguage",
+                        "in": "query",
+                        "description": "ID del Lenguage",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -580,15 +580,6 @@
                         "schema": {
                             "type": "integer",
                             "default": "1"
-                        }
-                    },
-                    {
-                        "name": "offset",
-                        "in": "query",
-                        "description": "offset o Limit de datos",
-                        "schema": {
-                            "type": "integer",
-                            "default": "0"
                         }
                     }
                 ],
