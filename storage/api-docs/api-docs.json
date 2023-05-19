@@ -413,7 +413,7 @@
                                         },
                                         "errors": {
                                             "type": "string",
-                                            "example": "..."
+                                            "example": ".."
                                         }
                                     },
                                     "type": "object"
@@ -508,7 +508,6 @@
                 ]
             }
         },
-<<<<<<< HEAD
         "/api/v1/imageproducts/search": {
             "get": {
                 "tags": [
@@ -522,27 +521,11 @@
                         "name": "lenguage",
                         "in": "query",
                         "description": "ID del Lenguage",
-=======
-        "/api/v1//qualify/{id}": {
-            "post": {
-                "tags": [
-                    "Qualify"
-                ],
-                "summary": "Crea Calificación de la app por el Usuario",
-                "description": "Crea la calificacion dada por un usuario a la app",
-                "operationId": "8db617ad232c8a6e1529e0017c61666e",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Id",
->>>>>>> 41002c0d327e5b0daa5e03050f3b2f474064a843
                         "required": true,
                         "schema": {
                             "type": "integer",
                             "default": "1"
                         }
-<<<<<<< HEAD
                     },
                     {
                         "name": "keyword",
@@ -561,8 +544,6 @@
                             "type": "integer",
                             "default": "1"
                         }
-=======
->>>>>>> 41002c0d327e5b0daa5e03050f3b2f474064a843
                     }
                 ],
                 "responses": {
@@ -594,11 +575,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-<<<<<<< HEAD
                                             "example": "Lenguaje no existe."
-=======
-                                            "example": "No esxite like"
->>>>>>> 41002c0d327e5b0daa5e03050f3b2f474064a843
                                         },
                                         "errors": {
                                             "type": "string",
@@ -618,7 +595,6 @@
                 ]
             }
         },
-<<<<<<< HEAD
         "/api/v1/qualify": {
             "get": {
                 "tags": [
@@ -751,19 +727,21 @@
                         "bearerAuth": []
                     }
                 ]
-            },
+            }
+        },
+        "/api/v1//qualify/{id}": {
             "post": {
                 "tags": [
                     "Qualify"
                 ],
-                "summary": "Crear calificacion del usuario",
-                "description": "Creacion de la calificacion del usuario",
-                "operationId": "408e163cc5f6d7fe9cf6da5f7b9306a2",
+                "summary": "Crea Calificación de la app por el Usuario",
+                "description": "Crea la calificacion dada por un usuario a la app",
+                "operationId": "8db617ad232c8a6e1529e0017c61666e",
                 "parameters": [
                     {
-                        "name": "user_id",
+                        "name": "id",
                         "in": "path",
-                        "description": "Id del Usuario",
+                        "description": "Id",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -771,37 +749,6 @@
                         }
                     }
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/raw": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "id": {
-                                        "type": "integer",
-                                        "example": "1"
-                                    },
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Mas Tarde"
-                                    },
-                                    "value": {
-                                        "type": "integer",
-                                        "example": "1"
-                                    },
-                                    "option": {
-                                        "type": "string",
-                                        "example": "month"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Resultado de la Operación",
@@ -809,21 +756,13 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "id": {
+                                        "status": {
                                             "type": "integer",
-                                            "example": "1"
+                                            "example": "200"
                                         },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Mas Tarde"
-                                        },
-                                        "value": {
-                                            "type": "integer",
-                                            "example": "1"
-                                        },
-                                        "option": {
-                                            "type": "string",
-                                            "example": "month"
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
                                         }
                                     },
                                     "type": "object"
@@ -839,7 +778,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Los datos son incorrectos."
+                                            "example": "No esxite like"
                                         },
                                         "errors": {
                                             "type": "string",
@@ -851,11 +790,14 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-=======
->>>>>>> 41002c0d327e5b0daa5e03050f3b2f474064a843
         "/api/v1/town/department/{idDepartment}": {
             "get": {
                 "tags": [
@@ -1296,7 +1238,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "No esxite like"
+                                            "example": "Se eliminó el like a esta categoria"
                                         },
                                         "errors": {
                                             "type": "string",
@@ -1533,7 +1475,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "No esxite like"
+                                            "example": "Se eliminó este usuario"
                                         },
                                         "errors": {
                                             "type": "string",
