@@ -83,23 +83,23 @@
                 }
             }
         },
-        "/api/v1/categories": {
+        "/api/v1/categories/{language}": {
             "get": {
                 "tags": [
                     "Categorias"
                 ],
                 "summary": "Devuelve todas los Categorias filtrando el lenguage recibido",
                 "description": "Retorna un Json con los Datos de las Categorias.",
-                "operationId": "9e975d8e2b6733988615c39b97de2eec",
+                "operationId": "89caf74cda41442dae54c2c1fadf8387",
                 "parameters": [
                     {
-                        "name": "lenguage",
-                        "in": "query",
-                        "description": "ID del Lenguage",
+                        "name": "language",
+                        "in": "path",
+                        "description": "Prefijo del idioma",
                         "required": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "string",
+                            "default": "ES"
                         }
                     }
                 ],
@@ -155,23 +155,33 @@
                 ]
             }
         },
-        "/api/v1/categories/{prefijo}": {
+        "/api/v1/categories/user/{language}": {
             "get": {
                 "tags": [
                     "Categorias"
                 ],
-                "summary": "Devuelveel prefijo del idiomas",
-                "description": "Retorna el prefijo del idiomas",
-                "operationId": "0242e3b8b81f18a1ebf86ad99ce2101b",
+                "summary": "Devuelve las categorias y si el usuario las tiene marcada con Like(Me gusta)",
+                "description": "Retorna Categorias con Like",
+                "operationId": "2800462eceb9caacfe6b7deb38612bf8",
                 "parameters": [
                     {
-                        "name": "prefijo",
+                        "name": "language",
                         "in": "path",
-                        "description": "prefijo",
+                        "description": "Prefijo del Idioma",
                         "required": true,
                         "schema": {
                             "type": "string",
                             "default": "ES"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "ID del Usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
                         }
                     }
                 ],
@@ -281,23 +291,32 @@
                 ]
             }
         },
-        "/api/v1/imageproducts": {
+        "/api/v1/imageproducts/{language}": {
             "get": {
                 "tags": [
                     "Imagenes"
                 ],
                 "summary": "Devuelve todas las imagenes filtrando el lenguaje",
                 "description": "Retorna un Json con los titulos de las imagenes filtradas por lenguaje",
-                "operationId": "0ed13cca4ae12811f15a90d3c28ddec9",
+                "operationId": "dbdab961240350c5aa31067d7b612b23",
                 "parameters": [
                     {
-                        "name": "lenguage",
-                        "in": "query",
-                        "description": "ID del Lenguage",
+                        "name": "language",
+                        "in": "path",
+                        "description": "Prefijo del Idioma",
                         "required": true,
                         "schema": {
+                            "type": "string",
+                            "default": "ES"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset o Limit de datos",
+                        "schema": {
                             "type": "integer",
-                            "default": "1"
+                            "default": "0"
                         }
                     }
                 ],
@@ -350,15 +369,25 @@
                 ]
             }
         },
-        "/api/v1/imageproducts/{image_id}/{lang_id}": {
+        "/api/v1/imageproducts/{language}/{image_id}": {
             "get": {
                 "tags": [
                     "Imagenes"
                 ],
                 "summary": "Devuelve la imagen por el id",
                 "description": "Retorna un Json con la imagene seleccionada por le Id ",
-                "operationId": "36425002d455896f5cefdcac0d6072da",
+                "operationId": "db6d59710a1d6dd4bdab9790f8b1f61d",
                 "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "Prefijo del Idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "ES"
+                        }
+                    },
                     {
                         "name": "image_id",
                         "in": "path",
@@ -370,13 +399,12 @@
                         }
                     },
                     {
-                        "name": "lang_id",
-                        "in": "path",
-                        "description": "Id del lenguaje",
-                        "required": true,
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset o Limit de datos",
                         "schema": {
                             "type": "integer",
-                            "default": "1"
+                            "default": "0"
                         }
                     }
                 ],
@@ -429,15 +457,25 @@
                 ]
             }
         },
-        "/api/v1/imageproducts/category/{category_id}/{lang_id}": {
+        "/api/v1/imageproducts/category/{language}/{category_id}": {
             "get": {
                 "tags": [
                     "Imagenes"
                 ],
                 "summary": "Devuelve todas las imagenes por categoria",
                 "description": "Retorna un Json con los las imagenes dependiendo la categoria ",
-                "operationId": "ffcbe48869a481a2689e3632e5d8db6f",
+                "operationId": "d023be58a3a9ff533c00a25454d8ca30",
                 "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "Prefijo del Idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "ES"
+                        }
+                    },
                     {
                         "name": "category_id",
                         "in": "path",
@@ -449,13 +487,12 @@
                         }
                     },
                     {
-                        "name": "lang_id",
-                        "in": "path",
-                        "description": "Id del lenguaje",
-                        "required": true,
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset o Limit de datos",
                         "schema": {
                             "type": "integer",
-                            "default": "1"
+                            "default": "0"
                         }
                     }
                 ],
@@ -508,23 +545,23 @@
                 ]
             }
         },
-        "/api/v1/imageproducts/search": {
+        "/api/v1/imageproducts/filter/search/{language}": {
             "get": {
                 "tags": [
                     "Imagenes"
                 ],
                 "summary": "Devuelve todas las imagenes filtrando el lenguaje",
                 "description": "Retorna un Json con los titulos de las imagenes filtradas por lenguaje",
-                "operationId": "fe637420eedd04861251df96f321d4ff",
+                "operationId": "bff93ec48d46c503ef015fb817671bcb",
                 "parameters": [
                     {
-                        "name": "lenguage",
-                        "in": "query",
-                        "description": "ID del Lenguage",
+                        "name": "language",
+                        "in": "path",
+                        "description": "Prefijo del idioma",
                         "required": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "string",
+                            "default": "ES"
                         }
                     },
                     {
@@ -544,6 +581,15 @@
                             "type": "integer",
                             "default": "1"
                         }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset o Limit de datos",
+                        "schema": {
+                            "type": "integer",
+                            "default": "0"
+                       }
                     }
                 ],
                 "responses": {

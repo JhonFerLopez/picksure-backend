@@ -44,8 +44,8 @@ Route::delete('/user/delete_users/{user_id}', [UserController::class, 'DeleteUse
 Route::put('/user/Update_users/{user_id}', [UserController::class, 'UpdateUser']);
 Route::get('/user/show_users/{user_id}', [UserController::class, 'ShowInfoUser']);
 //Categories
-Route::get('/categories', [Category::class, 'index']);
-Route::get('/categories/{prefijo}', [Category::class, 'idioma']);
+Route::get('/categories/{language}', [Category::class, 'index']);
+Route::get('/categories/user/{language}', [Category::class, 'categoryUser']);
 
 //Departments
 Route::middleware('auth:sanctum')->get('/department', [DepartmentController::class, 'index']);
@@ -60,10 +60,10 @@ Route::get('/qualify/{id}', [QualifyController::class, 'rateApp']);
 Route::post('/qualify/{id}', [QualifyController::class, 'createQualifyApp']);
 
 //Images
-Route::middleware('auth:sanctum')->get('/imageproducts', [ImageproductsController::class, 'index']);
-Route::middleware('auth:sanctum')->get('/imageproducts/{image_id}/{lang_id}', [ImageproductsController::class, 'showOne']); 
-Route::middleware('auth:sanctum')->get('/imageproducts/category/{category_id}/{lang_id}', [ImageproductsController::class, 'categoryId']);
-Route::get('/imageproducts/search', [ImageproductsController::class, 'search']);
+Route::get('/imageproducts/{language}', [ImageproductsController::class, 'index']);
+Route::get('/imageproducts/{language}/{image_id}', [ImageproductsController::class, 'showOne']); 
+Route::get('/imageproducts/category/{language}/{category_id}', [ImageproductsController::class, 'categoryId']);
+Route::get('/imageproducts/filter/search/{language}', [ImageproductsController::class, 'search']);
 
 Route::get('/greeting', function () {
     return 'Hello World';
