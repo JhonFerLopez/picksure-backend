@@ -15,16 +15,16 @@ class CategoriesController extends Controller
      *  tags={"Categorias"},
      *  summary="Devuelve todas los Categorias filtrando el lenguage recibido",
      *  description="Retorna un Json con los Datos de las Categorias.",
-     *  path="/api/v1/categories",
+     *  path="/api/v1/categories/{language}",
      *  security={{ "bearerAuth": {} }},
      *  @OA\Parameter(
-     *    name="lenguage",
-     *    in="query",
-     *    description="ID del Lenguage",
+     *    name="language",
+     *    in="path",
+     *    description="Prefijo del idioma",
      *    required=true,
      *    @OA\Schema(
-     *      default="1",
-     *      type="integer",
+     *      default="ES",
+     *      type="string",
      *    )
      *  ),
      *  @OA\Response(
@@ -45,20 +45,17 @@ class CategoriesController extends Controller
      *  )
      * )
      */
-	public function index(Request $request)
+	public function index(Request $request, $language)
   {    	
-    if(!isset($request->lenguage)){
-      return response()->json(array('data' => 'No existe el parametro id Lenguage'), 502);
-    }
-    $idLenguage = Language::where('id', $request->lenguage)->first();
-    if($idLenguage){
+    $languageData = Language::where('abreviatura', $language)->first();
+    if($languageData){
       $categories = DB::table('categories')
       ->join('texts_categories', 'texts_categories.category_id', '=', 'categories.id')
       ->select(
         'categories.id', 
         'texts_categories.name'
       )
-      ->where('texts_categories.language_id', '=', $request->lenguage)
+      ->where('texts_categories.language_id', '=', $languageData->id)
       ->orderBy('categories.name', 'asc')
       ->get();
       $response['status'] = 200;
@@ -74,18 +71,28 @@ class CategoriesController extends Controller
   /**
      * @OA\Get(
      *  tags={"Categorias"},
-     *  summary="Devuelveel prefijo del idiomas",
-     *  description="Retorna el prefijo del idiomas",
-     *  path="/api/v1/categories/{prefijo}",
+     *  summary="Devuelve las categorias y si el usuario las tiene marcada con Like(Me gusta)",
+     *  description="Retorna Categorias con Like",
+     *  path="/api/v1/categories/user/{language}",
      *  security={{ "bearerAuth": {} }},
      *  @OA\Parameter(
-     *    name="prefijo",
+     *    name="language",
      *    in="path",
-     *    description="prefijo",
+     *    description="Prefijo del Idioma",
      *    required=true,
      *    @OA\Schema(
      *      default="ES",
      *      type="string",
+     *    )
+     *  ),
+     *  @OA\Parameter(
+     *    name="user_id",
+     *    in="query",
+     *    description="ID del Usuario",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="1",
+     *      type="integer",
      *    )
      *  ),
      *  @OA\Response(
@@ -106,9 +113,8 @@ class CategoriesController extends Controller
      *  )
      * )
      */
-  public function idioma(Request $request, $prefijo){
-  
-    return response()->json($prefijo, 200);
+  public function categoryUser(Request $request, $language){
+    return response()->json($language, 200);
   }
   
 }

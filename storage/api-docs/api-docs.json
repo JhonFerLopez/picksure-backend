@@ -83,23 +83,23 @@
                 }
             }
         },
-        "/api/v1/categories": {
+        "/api/v1/categories/{language}": {
             "get": {
                 "tags": [
                     "Categorias"
                 ],
                 "summary": "Devuelve todas los Categorias filtrando el lenguage recibido",
                 "description": "Retorna un Json con los Datos de las Categorias.",
-                "operationId": "9e975d8e2b6733988615c39b97de2eec",
+                "operationId": "89caf74cda41442dae54c2c1fadf8387",
                 "parameters": [
                     {
-                        "name": "lenguage",
-                        "in": "query",
-                        "description": "ID del Lenguage",
+                        "name": "language",
+                        "in": "path",
+                        "description": "Prefijo del idioma",
                         "required": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "string",
+                            "default": "ES"
                         }
                     }
                 ],
@@ -155,23 +155,33 @@
                 ]
             }
         },
-        "/api/v1/categories/{prefijo}": {
+        "/api/v1/categories/user/{language}": {
             "get": {
                 "tags": [
                     "Categorias"
                 ],
-                "summary": "Devuelveel prefijo del idiomas",
-                "description": "Retorna el prefijo del idiomas",
-                "operationId": "0242e3b8b81f18a1ebf86ad99ce2101b",
+                "summary": "Devuelve las categorias y si el usuario las tiene marcada con Like(Me gusta)",
+                "description": "Retorna Categorias con Like",
+                "operationId": "2800462eceb9caacfe6b7deb38612bf8",
                 "parameters": [
                     {
-                        "name": "prefijo",
+                        "name": "language",
                         "in": "path",
-                        "description": "prefijo",
+                        "description": "Prefijo del Idioma",
                         "required": true,
                         "schema": {
                             "type": "string",
                             "default": "ES"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "ID del Usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
                         }
                     }
                 ],

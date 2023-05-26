@@ -44,8 +44,8 @@ Route::delete('/user/delete_users/{user_id}', [UserController::class, 'DeleteUse
 Route::put('/user/Update_users/{user_id}', [UserController::class, 'UpdateUser']);
 Route::get('/user/show_users/{user_id}', [UserController::class, 'ShowInfoUser']);
 //Categories
-Route::get('/categories', [Category::class, 'index']);
-Route::get('/categories/{prefijo}', [Category::class, 'idioma']);
+Route::get('/categories/{language}', [Category::class, 'index']);
+Route::get('/categories/user/{language}', [Category::class, 'categoryUser']);
 
 //Departments
 Route::middleware('auth:sanctum')->get('/department', [DepartmentController::class, 'index']);
