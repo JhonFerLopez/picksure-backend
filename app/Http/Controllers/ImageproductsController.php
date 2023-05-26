@@ -19,15 +19,24 @@ class ImageproductsController extends Controller
      *  tags={"Imagenes"},
      *  summary="Devuelve todas las imagenes filtrando el lenguaje",
      *  description="Retorna un Json con los titulos de las imagenes filtradas por lenguaje",
-     *  path="/api/v1/imageproducts",
+     *  path="/api/v1/imageproducts/{language}",
      *  security={{ "bearerAuth": {} }},
      *  @OA\Parameter(
-     *    name="lenguage",
-     *    in="query",
-     *    description="ID del Lenguage",
+     *    name="language",
+     *    in="path",
+     *    description="Prefijo del Idioma",
      *    required=true,
      *    @OA\Schema(
-     *      default="1",
+     *      default="ES",
+     *      type="string",
+     *    )
+     *  ),
+     *  @OA\Parameter(
+     *    name="offset",
+     *    in="query",
+     *    description="offset o Limit de datos",
+     *    @OA\Schema(
+     *      default="0",
      *      type="integer",
      *    )
      *  ),
@@ -49,23 +58,20 @@ class ImageproductsController extends Controller
      *  )
      * )
      */
-		public function index(Request $request)
+		public function index(Request $request, $language)
     {  	
-      if(!isset($request->lenguage)){
-          return response()->json(array('data' => 'No existe el parametro id Lenguage'), 502);
-      }
-      $idLenguage = Language::where('id', $request->lenguage)->first();
-      if($idLenguage){
+      $languageData = Language::where('abreviatura', $language)->first();
+      if($languageData){
         $image = DB::table('imageproducts')
         ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
         ->select('imageproducts.id', 'texts_imageproducts.language_id','imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description')
-        ->where('texts_imageproducts.language_id', '=', $request->lenguage)
+        ->where('texts_imageproducts.language_id', '=', $languageData->id)
         ->get();
         $response['status'] = 200;
         $response['data'] = $image; 
       }	else {
         $response['status'] = 402;
-        $response['data'] = 'Lenguaje no existe.';
+        $response['data'] = 'Lenguaje no encontrado.';
       }
       return response()->json($response, $response['status']);
     } 
@@ -74,8 +80,18 @@ class ImageproductsController extends Controller
      *  tags={"Imagenes"},
      *  summary="Devuelve la imagen por el id",
      *  description="Retorna un Json con la imagene seleccionada por le Id ",
-     *  path="/api/v1/imageproducts/{image_id}/{lang_id}",
+     *  path="/api/v1/imageproducts/{language}/{image_id}",
      *  security={{ "bearerAuth": {} }},
+     *  @OA\Parameter(
+     *    name="language",
+     *    in="path",
+     *    description="Prefijo del Idioma",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="ES",
+     *      type="string",
+     *    )
+     * ),
      * @OA\Parameter(
      *    name="image_id",
      *    in="path",
@@ -86,13 +102,12 @@ class ImageproductsController extends Controller
      *      type="integer",
      *    )
      *  ),
-     * * @OA\Parameter(
-     *    name="lang_id",
-     *    in="path",
-     *    description="Id del lenguaje",
-     *    required=true,
+     *  @OA\Parameter(
+     *    name="offset",
+     *    in="query",
+     *    description="offset o Limit de datos",
      *    @OA\Schema(
-     *      default="1",
+     *      default="0",
      *      type="integer",
      *    )
      *  ),
@@ -116,13 +131,15 @@ class ImageproductsController extends Controller
      */
 
 
-    public function showOne(  $image_id,$lang_id)
+    public function showOne(Request $request, $language, $image_id)
     {    	
+      $languageData = Language::where('abreviatura', $language)->first();
+
       $image_id = DB::table('imageproducts')
       ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
       ->select('imageproducts.id', 'texts_imageproducts.language_id','texts_imageproducts.title', 'texts_imageproducts.description','imageproducts.img_url')
-      ->where('texts_imageproducts.language_id', $lang_id)
-      ->where('imageproducts.id', $image_id)
+      ->where('texts_imageproducts.language_id', '=', $languageData->id)
+      ->where('imageproducts.id', '=', $image_id)
       ->get();
       if(!count($image_id) > 0){
         $response['status'] = Response::HTTP_NOT_FOUND;
@@ -139,8 +156,18 @@ class ImageproductsController extends Controller
      *  tags={"Imagenes"},
      *  summary="Devuelve todas las imagenes por categoria",
      *  description="Retorna un Json con los las imagenes dependiendo la categoria ",
-     *  path="/api/v1/imageproducts/category/{category_id}/{lang_id}",
+     *  path="/api/v1/imageproducts/category/{language}/{category_id}",
      *  security={{ "bearerAuth": {} }},
+     *  @OA\Parameter(
+     *    name="language",
+     *    in="path",
+     *    description="Prefijo del Idioma",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="ES",
+     *      type="string",
+     *    )
+     *  ),
      *  @OA\Parameter(
      *    name="category_id",
      *    in="path",
@@ -151,13 +178,12 @@ class ImageproductsController extends Controller
      *      type="integer",
      *    )
      *  ),
-     * @OA\Parameter(
-     *    name="lang_id",
-     *    in="path",
-     *    description="Id del lenguaje",
-     *    required=true,
+     *  @OA\Parameter(
+     *    name="offset",
+     *    in="query",
+     *    description="offset o Limit de datos",
      *    @OA\Schema(
-     *      default="1",
+     *      default="0",
      *      type="integer",
      *    )
      *  ),
@@ -181,13 +207,14 @@ class ImageproductsController extends Controller
   */
 
   // Consultar ImagenProduct por Id de Categoría
-    public function categoryId($category_id, $lang_id)
+    public function categoryId(Request $request, $language, $category_id)
     {  
+      $languageData = Language::where('abreviatura', $language)->first();
       $images = DB::table('imageproducts')
       ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
       ->join('imageproduct_category', 'imageproduct_category.imageproduct_id', '=', 'imageproducts.id')
       ->select('imageproducts.id', 'texts_imageproducts.language_id', 'texts_imageproducts.description','imageproducts.img_url')
-      ->where('texts_imageproducts.language_id', $lang_id)
+      ->where('texts_imageproducts.language_id', $languageData->id)
       ->where('imageproduct_category.category_id', $category_id)
       ->get();
       if(!count($images) > 0){
@@ -205,16 +232,16 @@ class ImageproductsController extends Controller
    *  tags={"Imagenes"},
    *  summary="Devuelve todas las imagenes filtrando el lenguaje",
    *  description="Retorna un Json con los titulos de las imagenes filtradas por lenguaje",
-   *  path="/api/v1/imageproducts/search",
+   *  path="/api/v1/imageproducts/filter/search/{language}",
    *  security={{ "bearerAuth": {} }},
    *  @OA\Parameter(
-   *    name="lenguage",
-   *    in="query",
-   *    description="ID del Lenguage",
+   *    name="language",
+   *    in="path",
+   *    description="Prefijo del idioma",
    *    required=true,
    *    @OA\Schema(
-   *      default="1",
-   *      type="integer",
+   *      default="ES",
+   *      type="string",
    *    )
    *  ),
    *  @OA\Parameter(
@@ -232,6 +259,15 @@ class ImageproductsController extends Controller
    *    description="ID de la Categoria",
    *    @OA\Schema(
    *      default="1",
+   *      type="integer",
+   *    )
+   *  ),
+   *  @OA\Parameter(
+   *    name="offset",
+   *    in="query",
+   *    description="offset o Limit de datos",
+   *    @OA\Schema(
+   *      default="0",
    *      type="integer",
    *    )
    *  ),
@@ -254,12 +290,14 @@ class ImageproductsController extends Controller
    * )
   */
   // Consultar ImagenProduct modalidad Search
-  public function search(Request $request)
+  public function search(Request $request, $language)
   {    	
+    $languageData = Language::where('abreviatura', $language)->first();
+
     $image = DB::table('imageproducts')
       ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
       ->select('imageproducts.id', 'texts_imageproducts.title', 'texts_imageproducts.description')
-      ->where('texts_imageproducts.language_id', '=', $request->lenguage)
+      ->where('texts_imageproducts.language_id', '=', $languageData->id)
       ->when(!empty($request->category), function($category) use ($request) {
         return $category->join('imageproduct_category', 'imageproduct_category.imageproduct_id', '=', 'imageproducts.id')
         ->where('imageproduct_category.category_id', '=', $request->category);
@@ -272,8 +310,10 @@ class ImageproductsController extends Controller
       })
       ->get();
       //->toSql();
-
-    return response()->json($image, 200);
+    $response['status'] = Response::HTTP_OK;
+    $response['data'] = $image;
+    
+    return response()->json($response, $response['status']);
   }
   /*
   public function indexFilter($id)

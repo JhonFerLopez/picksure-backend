@@ -281,23 +281,32 @@
                 ]
             }
         },
-        "/api/v1/imageproducts": {
+        "/api/v1/imageproducts/{language}": {
             "get": {
                 "tags": [
                     "Imagenes"
                 ],
                 "summary": "Devuelve todas las imagenes filtrando el lenguaje",
                 "description": "Retorna un Json con los titulos de las imagenes filtradas por lenguaje",
-                "operationId": "0ed13cca4ae12811f15a90d3c28ddec9",
+                "operationId": "dbdab961240350c5aa31067d7b612b23",
                 "parameters": [
                     {
-                        "name": "lenguage",
-                        "in": "query",
-                        "description": "ID del Lenguage",
+                        "name": "language",
+                        "in": "path",
+                        "description": "Prefijo del Idioma",
                         "required": true,
                         "schema": {
+                            "type": "string",
+                            "default": "ES"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset o Limit de datos",
+                        "schema": {
                             "type": "integer",
-                            "default": "1"
+                            "default": "0"
                         }
                     }
                 ],
@@ -350,15 +359,25 @@
                 ]
             }
         },
-        "/api/v1/imageproducts/{image_id}/{lang_id}": {
+        "/api/v1/imageproducts/{language}/{image_id}": {
             "get": {
                 "tags": [
                     "Imagenes"
                 ],
                 "summary": "Devuelve la imagen por el id",
                 "description": "Retorna un Json con la imagene seleccionada por le Id ",
-                "operationId": "36425002d455896f5cefdcac0d6072da",
+                "operationId": "db6d59710a1d6dd4bdab9790f8b1f61d",
                 "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "Prefijo del Idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "ES"
+                        }
+                    },
                     {
                         "name": "image_id",
                         "in": "path",
@@ -370,13 +389,12 @@
                         }
                     },
                     {
-                        "name": "lang_id",
-                        "in": "path",
-                        "description": "Id del lenguaje",
-                        "required": true,
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset o Limit de datos",
                         "schema": {
                             "type": "integer",
-                            "default": "1"
+                            "default": "0"
                         }
                     }
                 ],
@@ -413,7 +431,7 @@
                                         },
                                         "errors": {
                                             "type": "string",
-                                            "example": "..."
+                                            "example": ".."
                                         }
                                     },
                                     "type": "object"
@@ -429,15 +447,25 @@
                 ]
             }
         },
-        "/api/v1/imageproducts/category/{category_id}/{lang_id}": {
+        "/api/v1/imageproducts/category/{language}/{category_id}": {
             "get": {
                 "tags": [
                     "Imagenes"
                 ],
                 "summary": "Devuelve todas las imagenes por categoria",
                 "description": "Retorna un Json con los las imagenes dependiendo la categoria ",
-                "operationId": "ffcbe48869a481a2689e3632e5d8db6f",
+                "operationId": "d023be58a3a9ff533c00a25454d8ca30",
                 "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "Prefijo del Idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "ES"
+                        }
+                    },
                     {
                         "name": "category_id",
                         "in": "path",
@@ -449,13 +477,12 @@
                         }
                     },
                     {
-                        "name": "lang_id",
-                        "in": "path",
-                        "description": "Id del lenguaje",
-                        "required": true,
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset o Limit de datos",
                         "schema": {
                             "type": "integer",
-                            "default": "1"
+                            "default": "0"
                         }
                     }
                 ],
@@ -508,41 +535,24 @@
                 ]
             }
         },
-<<<<<<< HEAD
-        "/api/v1/imageproducts/search": {
+        "/api/v1/imageproducts/filter/search/{language}": {
             "get": {
                 "tags": [
                     "Imagenes"
                 ],
                 "summary": "Devuelve todas las imagenes filtrando el lenguaje",
                 "description": "Retorna un Json con los titulos de las imagenes filtradas por lenguaje",
-                "operationId": "fe637420eedd04861251df96f321d4ff",
+                "operationId": "bff93ec48d46c503ef015fb817671bcb",
                 "parameters": [
                     {
-                        "name": "lenguage",
-                        "in": "query",
-                        "description": "ID del Lenguage",
-=======
-        "/api/v1//qualify/{id}": {
-            "post": {
-                "tags": [
-                    "Qualify"
-                ],
-                "summary": "Crea Calificación de la app por el Usuario",
-                "description": "Crea la calificacion dada por un usuario a la app",
-                "operationId": "8db617ad232c8a6e1529e0017c61666e",
-                "parameters": [
-                    {
-                        "name": "id",
+                        "name": "language",
                         "in": "path",
-                        "description": "Id",
->>>>>>> 41002c0d327e5b0daa5e03050f3b2f474064a843
+                        "description": "Prefijo del idioma",
                         "required": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "string",
+                            "default": "ES"
                         }
-<<<<<<< HEAD
                     },
                     {
                         "name": "keyword",
@@ -561,8 +571,15 @@
                             "type": "integer",
                             "default": "1"
                         }
-=======
->>>>>>> 41002c0d327e5b0daa5e03050f3b2f474064a843
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset o Limit de datos",
+                        "schema": {
+                            "type": "integer",
+                            "default": "0"
+                        }
                     }
                 ],
                 "responses": {
@@ -594,11 +611,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-<<<<<<< HEAD
                                             "example": "Lenguaje no existe."
-=======
-                                            "example": "No esxite like"
->>>>>>> 41002c0d327e5b0daa5e03050f3b2f474064a843
                                         },
                                         "errors": {
                                             "type": "string",
@@ -618,7 +631,6 @@
                 ]
             }
         },
-<<<<<<< HEAD
         "/api/v1/qualify": {
             "get": {
                 "tags": [
@@ -751,19 +763,21 @@
                         "bearerAuth": []
                     }
                 ]
-            },
+            }
+        },
+        "/api/v1//qualify/{id}": {
             "post": {
                 "tags": [
                     "Qualify"
                 ],
-                "summary": "Crear calificacion del usuario",
-                "description": "Creacion de la calificacion del usuario",
-                "operationId": "408e163cc5f6d7fe9cf6da5f7b9306a2",
+                "summary": "Crea Calificación de la app por el Usuario",
+                "description": "Crea la calificacion dada por un usuario a la app",
+                "operationId": "8db617ad232c8a6e1529e0017c61666e",
                 "parameters": [
                     {
-                        "name": "user_id",
+                        "name": "id",
                         "in": "path",
-                        "description": "Id del Usuario",
+                        "description": "Id",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -771,37 +785,6 @@
                         }
                     }
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/raw": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "id": {
-                                        "type": "integer",
-                                        "example": "1"
-                                    },
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Mas Tarde"
-                                    },
-                                    "value": {
-                                        "type": "integer",
-                                        "example": "1"
-                                    },
-                                    "option": {
-                                        "type": "string",
-                                        "example": "month"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Resultado de la Operación",
@@ -809,21 +792,13 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "id": {
+                                        "status": {
                                             "type": "integer",
-                                            "example": "1"
+                                            "example": "200"
                                         },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Mas Tarde"
-                                        },
-                                        "value": {
-                                            "type": "integer",
-                                            "example": "1"
-                                        },
-                                        "option": {
-                                            "type": "string",
-                                            "example": "month"
+                                        "title de la imagen": {
+                                            "type": "varchar",
+                                            "example": "String"
                                         }
                                     },
                                     "type": "object"
@@ -839,7 +814,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Los datos son incorrectos."
+                                            "example": "No esxite like"
                                         },
                                         "errors": {
                                             "type": "string",
@@ -851,11 +826,14 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-=======
->>>>>>> 41002c0d327e5b0daa5e03050f3b2f474064a843
         "/api/v1/town/department/{idDepartment}": {
             "get": {
                 "tags": [
@@ -1296,7 +1274,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "No esxite like"
+                                            "example": "Se eliminó el like a esta categoria"
                                         },
                                         "errors": {
                                             "type": "string",
@@ -1533,7 +1511,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "No esxite like"
+                                            "example": "Se eliminó este usuario"
                                         },
                                         "errors": {
                                             "type": "string",
