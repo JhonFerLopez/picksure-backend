@@ -47,7 +47,7 @@ class CategoriesController extends Controller
      */
 	public function index(Request $request, $language)
   {    	
-    $languageData = Language::where('abreviatura', $language)->first();
+    $languageData = Language::where('prefijo', $language)->first();
     if($languageData){
       $categories = DB::table('categories')
       ->join('texts_categories', 'texts_categories.category_id', '=', 'categories.id')
