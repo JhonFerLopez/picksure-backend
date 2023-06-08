@@ -21,13 +21,47 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Documentation Apis Swagger
+## Prerequisites
+- [Composer, Install Global](https://getcomposer.org/download/). 
 
-[host]/api/documentation
+## Description
+
+[Voyager CMS](https://voyager.devdojo.com/) framework de Laravel PHP utilizado para CMS o sistemas administrativos APis.
+
+## Installation
+
+```bash
+$ composer install
+```
+
+## Environment
+
+```bash
+$ cp .env.example .env
+```
+Configure environment variables in .env
+
+## Installation Voyager 
+
+```bash
+$ php artisan voyager:install --with-dummy
+```
+
+## User Dummy Administrator 
+
+```
+Host Local: http://127.0.0.1:8000/admin
+email: admin@admin.com
+password: password
+```
+
+## Upgrade of documentation APis Swagger
+
+Documentations APis [host]/api/documentation
 
 ### Actualizar Libreria Swagger Apis
-```
-php artisan l5-swagger:generate 
+```bash
+$ php artisan l5-swagger:generate 
 ```
 
 ## Learning Laravel
