@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('group_public_locations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 			$table->bigIncrements('id');
-            $table->unsignedBigInteger('territorial_location_id');
-			$table->foreign('territorial_location_id')->references('id')->on('territorial_locations');            
+            $table->unsignedBigInteger('location_id');
+			$table->foreign('location_id')->references('id')->on('locations');            
             $table->unsignedBigInteger('group_public_id');
 			$table->foreign('group_public_id')->references('id')->on('group_public');
             $table->timestamps();

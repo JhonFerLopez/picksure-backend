@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use TCG\Voyager\Models\Role;
 use TCG\Voyager\Models\User;
-use App\Models\TerritorialLocations;
+use App\Models\Locations;
 
 class UsersTableSeeder extends Seeder
 {
@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
     {
         if (User::count() == 0) {
             $role = Role::where('name', 'admin')->firstOrFail();
-            $locations = TerritorialLocations::where('name', 'Cali')->firstOrFail();
+            $locations = Locations::where('name', 'Cali')->firstOrFail();
 
             User::create([
                 'name'           => 'Admin',
@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder
                 'role_id'        => $role->id,
                 'last_name'      => 'picksure',
                 'date_of_birth'  => '2023-05-29',
-                'territorial_location_id'        => $locations->id,
+                'location_id'    => $locations->id,
             ]);
         }
     }

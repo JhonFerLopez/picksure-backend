@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger('territorial_location_id');
-            $table->foreign('territorial_location_id')->references('id')->on('territorial_locations');
+            $table->unsignedBigInteger('location_id');
+            $table->foreign('location_id')->references('id')->on('locations');
             $table->rememberToken();
             $table->timestamps();
         });

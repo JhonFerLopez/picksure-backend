@@ -13,10 +13,13 @@ return new class extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('type_locations', function (Blueprint $table) {
+		Schema::create('locations', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
-			$table->increments('id');
+			$table->bigIncrements('id');
 			$table->string('name');
+			$table->string('code_iso')->nullable();
+			$table->unsignedBigInteger('locations_parent_id')->unsigned()->nullable()->default(null);
+			$table->foreign('locations_parent_id')->references('id')->on('locations');
 			$table->timestamps();
 		});
 	}
@@ -28,6 +31,6 @@ return new class extends Migration
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('type_locations');
+		Schema::dropIfExists('locations');
 	}
 };

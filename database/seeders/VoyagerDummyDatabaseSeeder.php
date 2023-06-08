@@ -15,8 +15,7 @@ class VoyagerDummyDatabaseSeeder extends Seeder
     {
         $this->call([
             CategoriesTableSeeder::class,
-            TypeLocationsTableSeeder::class,
-            TerritorialLocationsTableSeeder::class,
+            LocationsTableSeeder::class,
             LanguagesTableSeeder::class,
             UsersTableSeeder::class,
             PostsTableSeeder::class,
