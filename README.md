@@ -41,11 +41,24 @@ $ cp .env.example .env
 ```
 Configure environment variables in .env
 
+## Generate Key Laravel 
+
+```bash
+$ php artisan key:generate
+```
+
 ## Installation Voyager 
 
 ```bash
 $ php artisan voyager:install --with-dummy
 ```
+
+## Initial Serve
+
+```bash
+$ php artisan serve
+```
+Server running on [http://127.0.0.1:8000].
 
 ## User Dummy Administrator 
 
@@ -63,6 +76,7 @@ Documentations APis [host]/api/documentation
 ```bash
 $ php artisan l5-swagger:generate 
 ```
+Siempre actualice o documente una Api 
 
 ## Learning Laravel
 
