@@ -195,6 +195,7 @@ return [
 
     'additional_js' => [
         //'js/custom.js',
+        'js/js-ziel.js',
         'https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js'
     ],
 
