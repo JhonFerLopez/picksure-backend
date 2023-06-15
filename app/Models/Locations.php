@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Language extends Model
+class Locations extends Model
 {
 	use HasFactory;
-	/** 	
+	/** 
 	 * nameTable 
 	 */
-	protected $table = 'languages';
+	protected $table = 'locations';
 	/**
 	 * The attributes that are mass assignable.
 	 *
@@ -20,7 +20,7 @@ class Language extends Model
 	protected $fillable = [
 		'id', 
 		'name', 
-		'prefijo',
+		'code_iso',
+		'locations_parent_id',
 	];
-	
 }
