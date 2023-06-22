@@ -7,3 +7,6 @@
   overflow-y: scroll;
   scroll-behavior: smooth;*/
 }
+.btn.btn-primary {
+  background: #898A8A;
+}
