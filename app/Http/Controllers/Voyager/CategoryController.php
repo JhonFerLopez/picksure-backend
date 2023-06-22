@@ -334,7 +334,7 @@ class CategoryController extends \TCG\Voyager\Http\Controllers\VoyagerBaseContro
             ->select('texts_categories.category_id', 
                 'texts_categories.name as namecategory', 
                 'texts_categories.language_id',
-                'languages.abreviatura',
+                'languages.prefijo',
                 'languages.name',)
             ->where('category_id', '=', $id)
             ->get();
