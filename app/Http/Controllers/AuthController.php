@@ -51,9 +51,10 @@ class AuthController extends Controller
     $user = User::where('email', $data->email)->first();
     if($user){
       if(Hash::check($data->password, $user->password)){
-        $token = $user->createToken('example');
+        //$token = $user->createToken('example');
+        $token = $user->remember_token;
         $response['status'] = 200;
-        $response['msg'] = $token->plainTextToken; 
+        $response['msg'] = $token; 
       }else {
         $response['status'] = 402;
         $response['msg'] = 'Password Incorrecta.';  
