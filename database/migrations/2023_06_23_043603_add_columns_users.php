@@ -14,9 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
+<<<<<<< HEAD
             $table->string('phone', 15);
             $table->string('country', 20);
             $table->string('city', 20);
+=======
+            $table->integer('phone');
+            $table->string('country');
+            $table->string('city');
+>>>>>>> 1919510 (auth)
         });
     }
 
