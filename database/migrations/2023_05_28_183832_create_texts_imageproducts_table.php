@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('description');
 			$table->unsignedBigInteger('imageproduct_id');
 			$table->foreign('imageproduct_id')->references('id')->on('imageproducts');
-			$table->unsignedInteger('language_id');
 			$table->foreign('language_id')->references('id')->on('languages');
             $table->timestamps();
         });
