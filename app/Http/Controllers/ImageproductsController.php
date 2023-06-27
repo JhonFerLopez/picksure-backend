@@ -60,12 +60,11 @@ class ImageproductsController extends Controller
      */
 		public function index(Request $request, $language)
     {  	
-      $languageData = Language::where('abreviatura', $language)->first();
-      if($languageData){
+      if($language){
         $image = DB::table('imageproducts')
         ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
-        ->select('imageproducts.id', 'texts_imageproducts.language_id','imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description')
-        ->where('texts_imageproducts.language_id', '=', $languageData->id)
+        ->select('imageproducts.id', 'texts_imageproducts.language','imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description')
+        ->where('texts_imageproducts.language', '=', $language)
         ->get();
         $response['status'] = 200;
         $response['data'] = $image; 

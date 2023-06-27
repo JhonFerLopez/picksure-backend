@@ -19,7 +19,7 @@ class TextsCategory extends Model
    */
   protected $fillable = [
       'category_id', 
-      'language_id',
+      'language',
       'name', 
   ];
 

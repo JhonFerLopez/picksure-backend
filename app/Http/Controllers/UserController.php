@@ -563,7 +563,7 @@ public function UpdateUser($user_id){
 
     $$user_id = DB::table('users')
       ->select('users.id', 'users.name', 'users.last_name', 'users.email', 'users.created_at','users.avatar')
-      ->where('users.remember_token', $user_id)
+      ->where('users.id', $user_id)
       ->get();
       if(!count($$user_id) > 0){
         $response['status'] = Response::HTTP_NOT_FOUND;

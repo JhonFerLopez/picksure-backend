@@ -47,15 +47,14 @@ class CategoriesController extends Controller
      */
 	public function index(Request $request, $language)
   {    	
-    $languageData = Language::where('prefijo', $language)->first();
-    if($languageData){
+    if($language){
       $categories = DB::table('categories')
       ->join('texts_categories', 'texts_categories.category_id', '=', 'categories.id')
       ->select(
         'categories.id', 
         'texts_categories.name'
       )
-      ->where('texts_categories.language_id', '=', $languageData->id)
+      ->where('texts_categories.language', '=', $language)
       ->orderBy('categories.name', 'asc')
       ->get();
       $response['status'] = 200;
@@ -113,7 +112,7 @@ class CategoriesController extends Controller
      *  )
      * )
      */
-  public function categoryUser(Request $request, $language){
+  public function categoryUser(Request $request, $language = 'ES'){
     return response()->json($language, 200);
   }
   

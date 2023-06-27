@@ -19,7 +19,7 @@ class TextsImageproducts extends Model
      */
     protected $fillable = [
         'imageproduct_id', 
-        'language_id',
+        'language',
         'title', 
         'description',
     ];

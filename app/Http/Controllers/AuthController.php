@@ -52,7 +52,7 @@ class AuthController extends Controller
     if($user){
       if(Hash::check($data->password, $user->password)){
         //$token = $user->createToken('example');
-        $token = $user->remember_token;
+        $token = $user->id;
         $response['status'] = 200;
         $response['msg'] = $token; 
       }else {
