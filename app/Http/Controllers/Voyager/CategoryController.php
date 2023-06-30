@@ -334,7 +334,7 @@ class CategoryController extends \TCG\Voyager\Http\Controllers\VoyagerBaseContro
             ->select('texts_categories.category_id', 
                 'texts_categories.name as namecategory', 
                 'texts_categories.language_id',
-                'languages.abreviatura',
+                'languages.prefijo',
                 'languages.name',)
             ->where('category_id', '=', $id)
             ->get();
@@ -420,6 +420,8 @@ class CategoryController extends \TCG\Voyager\Http\Controllers\VoyagerBaseContro
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
+        //$languages = Language::all();
+        $languages = DB::table('language')->get();
         // Check permission
         $this->authorize('add', app($dataType->model_name));
 
@@ -445,10 +447,16 @@ class CategoryController extends \TCG\Voyager\Http\Controllers\VoyagerBaseContro
         if (view()->exists("voyager::$slug.edit-add")) {
             $view = "voyager::$slug.edit-add";
         }
-        $languages = Language::all();
+        $pruebas = [];
         $itemTexts = $this->itemTexts;
 
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable','languages','itemTexts'));
+        return Voyager::view($view, compact(
+            'dataType',
+            'dataTypeContent',
+            'isModelTranslatable',
+            'languages',
+            'itemTexts'
+        ));
     }
 
     /**

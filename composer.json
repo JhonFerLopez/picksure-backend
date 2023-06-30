@@ -12,7 +12,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.10",
-        "tcg/voyager": "^1.6",
+        "tcg/voyager": "*",
         "zircote/swagger-php": "^4.7"
     },
     "require-dev": {

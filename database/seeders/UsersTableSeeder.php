@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use TCG\Voyager\Models\Role;
 use TCG\Voyager\Models\User;
+use App\Models\Locations;
 
 class UsersTableSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class UsersTableSeeder extends Seeder
     {
         if (User::count() == 0) {
             $role = Role::where('name', 'admin')->firstOrFail();
+            $locations = Locations::where('name', 'Cali')->firstOrFail();
 
             User::create([
                 'name'           => 'Admin',
@@ -25,6 +27,9 @@ class UsersTableSeeder extends Seeder
                 'password'       => bcrypt('password'),
                 'remember_token' => Str::random(60),
                 'role_id'        => $role->id,
+                'last_name'      => 'picksure',
+                'date_of_birth'  => '2023-05-29',
+                'location_id'    => $locations->id,
             ]);
         }
     }

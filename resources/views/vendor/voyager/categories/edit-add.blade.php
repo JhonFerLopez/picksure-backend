@@ -112,7 +112,7 @@
 															<label for="group">Idioma</label>
 															<select class="form-control group_select group_select_new" name="lang" id="lenguage">
 																@foreach($languages as $language)
-																	<option value="{{ $language->id }}">{{ $language->abreviatura }} - {{ $language->name }}</option>
+																	<option value="{{ $language->id }}">{{ $language->prefijo }} - {{ $language->name }}</option>
 																@endforeach
 															</select>
 														</div>
@@ -143,7 +143,7 @@
 																					<input type="hidden" name="nametext[]" value="{{ $value->namecategory }}" />
 																				</td>
 																				<td>
-																					{{ $value->abreviatura.' - '.$value->name }}
+																					{{ $value->prefijo.' - '.$value->name }}
 																					<input type="hidden" name="language[]" value="{{ $value->language_id }}" />                            
 																				</td>
 																				<td> 

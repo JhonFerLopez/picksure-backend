@@ -110,7 +110,7 @@ return [
          * Select languages that are supported.
          */
         'locales' => [
-            'en',
+            'es',
             //'pt',
         ],
     ],
@@ -183,7 +183,7 @@ return [
     |
     */
 
-    'primary_color' => '#22A7F0',
+    'primary_color' => '#000000',
 
     'show_dev_tips' => true, // Show development tip "How To Use:" in Menu and Settings
 
@@ -195,6 +195,7 @@ return [
 
     'additional_js' => [
         //'js/custom.js',
+        'js/js-ziel.js',
         'https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js'
     ],
 

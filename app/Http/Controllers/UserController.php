@@ -562,7 +562,7 @@ public function UpdateUser($user_id){
   public function ShowInfoUser($user_id){
 
     $$user_id = DB::table('users')
-      ->select('users.name', 'users.lastname', 'users.email', 'users.created_at','users.avatar')
+      ->select('users.id', 'users.name', 'users.last_name', 'users.email', 'users.created_at','users.avatar')
       ->where('users.id', $user_id)
       ->get();
       if(!count($$user_id) > 0){
