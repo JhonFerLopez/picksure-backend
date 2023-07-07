@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::table('texts_categories', function (Blueprint $table) {
             $table->string('language');
-            $table->dropForeign('texts_categories_language_id_foreign');
-            $table->dropColumn('language_id');
+            //$table->dropForeign('texts_categories_language_id_foreign');
+            //$table->dropColumn('language_id');
         });
     }
 
