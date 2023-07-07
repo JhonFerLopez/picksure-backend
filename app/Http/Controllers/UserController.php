@@ -246,12 +246,7 @@ class UserController extends Controller
      */
   public function createLikeCategory(Request $request)
   {
-    
-    DB::table('user_like_category')
-    ->where('user_id', $request->user_id)  
-    ->delete();
-
-    foreach($request->category_id as $category){
+    foreach($request->categories as $category){
       $likeCategory = UserLikeCategory::create([
         'user_id' => $request->user_id,
         'category_id' => $category
@@ -440,15 +435,21 @@ class UserController extends Controller
      *  )
      * )
      */
-  public function CreateUser(Request $request ,$user_id)
+  public function CreateUser(Request $request)
   {
     $user = new User;
     $user->name = $request->name;
     $user->email = $request->email;
     $user->password = bcrypt($request->password);
+    $user->last_name = $request->apellido;
+    $user->date_of_birth = $request->birthday;
+    $user->location_id = $request->pais;
+    $user->phone = $request->telefono;
+    
     $user->save();
 
-    return redirect('/home');
+    //return redirect('/home');
+    return response()->json('Usuario registrado', 200);
 }
 
  /**
@@ -530,9 +531,9 @@ class UserController extends Controller
      *  )
      * )
      */
-public function UpdateUser($user_id){
+    public function UpdateUser($user_id){
 
-  }
+    }
 
 /**
      * @OA\Get(

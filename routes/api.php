@@ -34,12 +34,12 @@ Route::post('/auth/token', [AuthController::class, 'login']);
 
 //Users
 Route::middleware('auth:sanctum')->get('/user/like_category/{user_id}/{lang_id}', [UserController::class, 'showLikeCategory']);
-Route::post('/user/like_category/{user_id}/{category_id}', [UserController::class, 'createLikeCategory']);
+Route::post('/user/like_category', [UserController::class, 'createLikeCategory']);
 Route::delete('/user/like_category/{user_id}/{category_id}', [UserController::class, 'deleteLikeCategory']);
 Route::post('/user/like_imageproduct/{user_id}/{img_id}', [UserController::class, 'createLikeImageproduct']);
 Route::middleware('auth:sanctum')->get('/user/like_imageproduct/{user_id}/{lang_id}', [UserController::class, 'showLikeImageproduct']);
 Route::delete('/user/like_imageproduct/{user_id}/{img_id}', [UserController::class, 'deleteLikeImageproduct']);
-Route::post('/user/create_users/{user_id}', [UserController::class, 'CreateUser']);
+Route::post('/user/create_users', [UserController::class, 'CreateUser']);
 Route::delete('/user/delete_users/{user_id}', [UserController::class, 'DeleteUser']);
 Route::put('/user/Update_users/{user_id}', [UserController::class, 'UpdateUser']);
 Route::get('/user/show_users/{user_id}', [UserController::class, 'ShowInfoUser']);
