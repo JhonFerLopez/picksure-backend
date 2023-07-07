@@ -192,10 +192,20 @@ class UserController extends Controller
  /**
      * @OA\Post(
      *  tags={"Likes"},
-     *  summary="Crea like que un usuario de a las categorias",
+     *  summary="Crea like de un usuario a las categorias",
      *  description="Crea like que un usuario de a las categorias",
      *  path="/api/v1/user/like_category/{user_id}/{category_id}",
      *  security={{ "bearerAuth": {} }},
+     * @OA\RequestBody(
+     *  @OA\MediaType(
+     *   mediaType="application/raw",
+     *   @OA\Schema(
+     *    required={"email","password"},
+     *    @OA\Property(property="email", type="string", example="flover.sanchez@ziel.com.co"),
+     *     @OA\Property(property="password", type="string", example="password"),
+     *    )
+     *  ),
+     * ),
      * * @OA\Parameter(
      *    name="user_id",
      *    in="path",

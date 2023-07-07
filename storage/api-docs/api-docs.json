@@ -589,7 +589,7 @@
                         "schema": {
                             "type": "integer",
                             "default": "0"
-                       }
+                        }
                     }
                 ],
                 "responses": {
@@ -1153,7 +1153,7 @@
                 "tags": [
                     "Likes"
                 ],
-                "summary": "Crea like que un usuario de a las categorias",
+                "summary": "Crea like de un usuario a las categorias",
                 "description": "Crea like que un usuario de a las categorias",
                 "operationId": "9ebf7488eb07af8eb892818f5e5f74de",
                 "parameters": [
@@ -1178,6 +1178,29 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/raw": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "flover.sanchez@ziel.com.co"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Resultado de la Operación",
