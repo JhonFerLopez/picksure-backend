@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::table('texts_imageproducts', function (Blueprint $table) {
             $table->string('language');
-            $table->dropForeign('texts_imageproducts_language_id_foreign');
-            $table->dropColumn('language_id');
+            //$table->dropForeign('texts_imageproducts_language_id_foreign');
+            //$table->dropColumn('language_id');
         });
     }
 
