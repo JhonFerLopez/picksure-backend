@@ -476,36 +476,47 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 	 */
 	public function store(Request $request)
 	{
-			$slug = $this->getSlug($request);
+		$request['user_id'] = 1;
 
-			$dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+		if ($request->hasFile('image_product')) {
+            $file = $request->file('image_product');
 
-			// Check permission
-			$this->authorize('add', app($dataType->model_name));
+            $path = $file->store('uploads', 'public');
 
-			// Validate fields with ajax
-			$val = $this->validateBread($request->all(), $dataType->addRows)->validate();
-			$data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
+            // Obtiene la URL completa de la imagen cargada
+            $request['img_url'] = asset('storage/posts/' . $path);
+        }
 
-			event(new BreadDataAdded($dataType, $data));
+		$slug = $this->getSlug($request);
 
-			$input = $request->all();
-			$items = $this->addTexts($data->id, $input);
+		$dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-			if (!$request->has('_tagging')) {
-					if (auth()->user()->can('browse', $data)) {
-							$redirect = redirect()->route("voyager.{$dataType->slug}.index");
-					} else {
-							$redirect = redirect()->back();
-					}
+		// Check permission
+		$this->authorize('add', app($dataType->model_name));
 
-					return $redirect->with([
-							'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
-							'alert-type' => 'success',
-					]);
+		// Validate fields with ajax
+		$val = $this->validateBread($request->all(), $dataType->addRows)->validate();
+		$data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
+
+		event(new BreadDataAdded($dataType, $data));
+
+		$input = $request->all();
+		$items = $this->addTexts($data->id, $input);
+
+		if (!$request->has('_tagging')) {
+			if (auth()->user()->can('browse', $data)) {
+				$redirect = redirect()->route("voyager.{$dataType->slug}.index");
 			} else {
-					return response()->json(['success' => true, 'data' => $data]);
+				$redirect = redirect()->back();
 			}
+
+			return $redirect->with([
+				'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
+				'alert-type' => 'success',
+			]);
+		} else {
+			return response()->json(['success' => true, 'data' => $data]);
+		}
 	}
 
 	//***************************************
@@ -1063,7 +1074,7 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 			foreach ($itemLenguage as $key => $value) {
 				$texts = TextsImageproducts::create([
 					'imageproduct_id' => $id,
-					'language_id' => $value,
+					'language' => $value,
 					'title' => $itemTitle[$key],
 					'description' => $itemDescription[$key],
 				]);
