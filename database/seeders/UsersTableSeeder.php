@@ -30,6 +30,9 @@ class UsersTableSeeder extends Seeder
                 'last_name'      => 'picksure',
                 'date_of_birth'  => '2023-05-29',
                 'location_id'    => $locations->id,
+                'phone'          => '55555',
+                'country'        => 'Colombia',
+                'city'           => 'Cali',
             ]);
         }
     }
