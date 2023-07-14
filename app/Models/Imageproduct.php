@@ -10,7 +10,7 @@ class Imageproduct extends Model
 	use HasFactory;
 	public function language()
 	{
-		return $this->belongsToMany('App\Models\Language','texts_imageproducts', 'language_id','imageproduct_id')->withPivot('id','title','description');
+		return $this->belongsToMany('App\Models\Language','texts_imageproducts','imageproduct_id')->withPivot('id','title','description','imageproduct_id','language');
 	} 
 	   
 }

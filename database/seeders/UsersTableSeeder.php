@@ -30,7 +30,6 @@ class UsersTableSeeder extends Seeder
                 'last_name'      => 'picksure',
                 'date_of_birth'  => '2023-05-29',
                 'phone'          => '213123',
-                'country'        => 1,
                 'city'           => 'Cali',
                 'location_id'    => $locations->id,
             ]);

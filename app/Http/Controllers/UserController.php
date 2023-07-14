@@ -236,9 +236,13 @@ class UserController extends Controller
      */
   public function createLikeCategory(Request $request)
   {
-    foreach($request->categories as $category){
+
+    $response = ['status' => 404, 'data' => [] ];
+    $data = json_decode($request->getContent());
+
+    foreach($data->categories as $category){
       $likeCategory = UserLikeCategory::create([
-        'user_id' => $request->user_id,
+        'user_id' => $data->user_id,
         'category_id' => $category
       ]);
     }    
@@ -427,19 +431,28 @@ class UserController extends Controller
      */
   public function CreateUser(Request $request)
   {
+    $response = ['status' => 404, 'data' => [] ];
+    $data = json_decode($request->getContent());
     $user = new User;
-    $user->name = $request->name;
-    $user->email = $request->email;
-    $user->password = bcrypt($request->password);
-    $user->last_name = $request->apellido;
-    $user->date_of_birth = $request->birthday;
-    $user->location_id = $request->pais;
-    $user->phone = $request->telefono;
+    $user->name = $data->name;
+    $user->last_name = $data->last_name;
+    $user->email = $data->email;
+    $user->password = bcrypt($data->password);
+    $user->date_of_birth = $data->date_of_birth;
+    $user->location_id = $data->location_id;
+    $user->phone = $data->phone;
+    $user->city = $data->city;
+    $user->role_id = $data->role_id;
     
     $user->save();
 
+    $userInfo = User::where('email', $data->email)->first();
+
     //return redirect('/home');
-    return response()->json('Usuario registrado', 200);
+    $response["status"] = 200;
+    $response["data"] = $userInfo;
+    return response()->json($response, $response['status']);
+
 }
 
  /**
