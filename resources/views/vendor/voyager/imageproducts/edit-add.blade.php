@@ -1,3 +1,65 @@
+<style>
+	:root {
+		--colorPrimaryNormal: #00b3bb;
+		--colorPrimaryDark: #00979f;
+		--colorPrimaryGlare: #00cdd7;
+		--colorPrimaryHalf: #000000;
+		--colorPrimaryQuarter: #bfecee;
+		--colorPrimaryEighth: #dff5f7;
+		--colorPrimaryPale: #f3f5f7;
+		--colorPrimarySeparator: #f3f5f7;
+		--colorPrimaryOutline: #dff5f7;
+		--colorButtonNormal: #00b3bb;
+		--colorButtonHover: #00cdd7;
+		--colorLinkNormal: #00979f;
+		--colorLinkHover: #00cdd7;
+	}
+	.upload_dropZone {
+		color: #0f3c4b;
+		background-color: var(--colorPrimaryPale, #c8dadf);
+		outline: 2px dashed var(--colorPrimaryHalf, #c1ddef);
+		outline-offset: -12px;
+		transition:
+			outline-offset 0.2s ease-out,
+			outline-color 0.3s ease-in-out,
+			background-color 0.2s ease-out;
+	}
+	.upload_dropZone.highlight {
+		outline-offset: -4px;
+		outline-color: var(--colorPrimaryNormal, #0576bd);
+		background-color: var(--colorPrimaryEighth, #c8dadf);
+	}
+	.upload_svg {
+		fill: var(--colorPrimaryNormal, #0576bd)!important;
+		vertical-align: middle;
+		display: contents!important;
+	}
+	.btn-upload {
+		color: #fff;
+		background-color: var(--colorPrimaryNormal);
+	}
+	.btn-upload:hover,
+	.btn-upload:focus {
+		color: #fff;
+		background-color: var(--colorPrimaryGlare);
+	}
+	.icon {
+		font-size: 40px;
+	}
+	.upload_img {
+		width: calc(33.333% - (2rem / 3));
+		object-fit: contain;
+	}
+	.position-absolute {
+		position: absolute!important;
+	}
+	.p-4 {
+		padding: 1.5rem!important;
+	}
+	.mb-3 {
+		margin-bottom: 1rem!important;
+	}
+</style>
 @php
 	$edit = !is_null($dataTypeContent->getKey());
 	$add  = is_null($dataTypeContent->getKey());
@@ -10,7 +72,6 @@
 @stop
 
 @section('page_title', __('voyager::generic.'.($edit ? 'edit' : 'add')).' '.$dataType->getTranslatedAttribute('display_name_singular'))
-
 @section('page_header')
 	<h1 class="page-title">
 		<i class="{{ $dataType->icon }}"></i>
@@ -38,109 +99,89 @@
 					<!-- CSRF TOKEN -->
 					{{ csrf_field() }}
 
+					
 					<div class="panel-body">
-						<div class="col-md-9">
-							
-							@if (count($errors) > 0)
-								<div class="alert alert-danger">
-									<ul>
-										@foreach ($errors->all() as $error)
-											<li>{{ $error }}</li>
-										@endforeach
-									</ul>
-								</div>
-							@endif
+						@if(!$edit)
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="1" checked>
+								<label class="form-check-label" for="flexRadioDefault1">
+									Subir Imagen
+								</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="2">
+								<label class="form-check-label" for="flexRadioDefault2">
+									Url de la Imagen
+								</label>
+							</div>
+						@endif
 
-							<!-- Adding / Editing -->
-							@php
-									$dataTypeRows = $dataType->{($edit ? 'editRows' : 'addRows' )};
-							@endphp
+						<fieldset id="img-content" class="upload_dropZone text-center mb-3 p-4">
 
-							@foreach($dataTypeRows as $row)
-								<!-- GET THE DISPLAY OPTIONS -->
-								@php
-									$display_options = $row->details->display ?? NULL;
-									if ($dataTypeContent->{$row->field.'_'.($edit ? 'edit' : 'add')}) {
-										$dataTypeContent->{$row->field} = $dataTypeContent->{$row->field.'_'.($edit ? 'edit' : 'add')};
-									}
-								@endphp
-								@if (isset($row->details->legend) && isset($row->details->legend->text))
-									<legend class="text-{{ $row->details->legend->align ?? 'center' }}" style="background-color: {{ $row->details->legend->bgcolor ?? '#f0f0f0' }};padding: 5px;">{{ $row->details->legend->text }}</legend>
-								@endif
 
-								<div class="form-group @if($row->type == 'hidden') hidden @endif col-md-{{ $display_options->width ?? 12 }} {{ $errors->has($row->field) ? 'has-error' : '' }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
-									{{ $row->slugify }}
-									<label class="control-label" for="name">{{ $row->getTranslatedAttribute('display_name') }}</label>
-									@include('voyager::multilingual.input-hidden-bread-edit-add')
-									@if ($add && isset($row->details->view_add))
-										@include($row->details->view_add, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'view' => 'add', 'options' => $row->details])
-									@elseif ($edit && isset($row->details->view_edit))
-										@include($row->details->view_edit, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'view' => 'edit', 'options' => $row->details])
-									@elseif (isset($row->details->view))
-										@include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'action' => ($edit ? 'edit' : 'add'), 'view' => ($edit ? 'edit' : 'add'), 'options' => $row->details])
-									@elseif ($row->type == 'relationship')
-										@include('voyager::formfields.relationship', ['options' => $row->details])
-									@else
-										{!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
-									@endif
+							<div class="icon voyager-upload upload_svg"></div>
 
-									@foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
-										{!! $after->handle($row, $dataType, $dataTypeContent) !!}
-									@endforeach
-									@if ($errors->has($row->field))
-										@foreach ($errors->get($row->field) as $error)
-											<span class="help-block">{{ $error }}</span>
-										@endforeach
-									@endif
-								</div>
-							@endforeach
-						</div>
-						<div class="col-md-3">
-							<h3 class="panel-title">Selecciona la Categoría</h3>
-							<div class="categories-product">
-								@foreach($categories as $category)
-									<div class="form-check">
-										<input type="checkbox" name="category[]" value="{{ $category->id }}" 
-											class="form-check-input" 
-											@if ($category->selected)
-												checked
-											@endif
-											>
-										<label class="form-check-label">{{ $category->name }}</label>
-									</div>
-                @endforeach
+							<p class="small my-2">Arrastre y suelte la(s) imagen(es) de fondo dentro de la región punteada<br><i>ó</i></p>
+
+							<input name="image_product" id="image_product" data-post-name="image_background"  class="position-absolute invisible" type="file" accept="image/jpeg, image/png, image/svg+xml" />
+
+							<label class="btn btn-primary mb-3" for="image_product">Seleccionar archivo(s)</label>
+
+							<div class="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0"></div>
+
+						</fieldset>
+
+						<div class="form-group">
+							<div id="url-content" class="col-md-12" style="display: none;">
+								<label for="title">URL</label>
+								<input type="text" class="form-control" name="img_url" id="img_url" placeholder="storage/posts/post2.jpg">
 							</div>
 						</div>
-					</div><!-- panel-body -->
-
-					<div class="panel-body">
-						<div class="form-gruop">
+						<br>
+						<div class="form-group">
 							<input type="hidden" name="setting_tab" class="setting_tab" />
 							<div class="panel-heading new-setting">
 								<hr>
-								<h3 class="panel-title">Agregar Textos del registro</h3>
+								<h3 class="panel-title">Agregar información de la imágen</h3>
 								<div id="messsage-item" class="text-danger"></div>
 							</div>
 							<div class="col-md-3">
-								<label for="title">título</label>
+								<label for="title">Título</label>
 								<input type="text" class="form-control" name="title" id="title" placeholder="Escribe el título">
 							</div>
+							
+							<div class="col-md-1">
+								<label for="group">Idioma</label>
+								<input type="text" class="form-control" name="lenguage" id="lenguage" placeholder="ES">
+							</div>
 							<div class="col-md-3">
-								<label for="description">Descrición</label>
+								<label for="description">Descripción</label>
 								<textarea class="form-control" name="description" id="description" placeholder="Descripción del modelo" ></textarea>
 							</div>
 							<div class="col-md-3">
-								<label for="group">Idioma</label>
-								<select class="form-control group_select group_select_new" name="lang" id="lenguage">
-									@foreach($languages as $language)
-										<option value="{{ $language->id }}">{{ $language->abreviatura }} - {{ $language->name }}</option>
+								<label for="description">Selecciona la Categoría</label>
+								<div class="categories-product">
+									@foreach($categories as $category)
+										<div class="form-check">
+											<input type="checkbox" name="category[]" value="{{ $category->id }}" 
+												class="form-check-input" 
+												@if ($category->selected)
+													checked
+												@endif
+												>
+											<label class="form-check-label">{{ $category->name }}</label>
+										</div>
 									@endforeach
-								</select>
+								</div>
 							</div>
-							<button type="button" class="btn btn-primary pull-right new-setting-btn" 
-								id="itemTextsImageProducts" onclick="addItemImageProducts()">
-								<i class="voyager-plus"></i>Agregar texto
-							</button>
+							<div class="col-md-2">
+								<div class="form-group">
+									<button type="button" class="btn btn-primary pull-right new-setting-btn" 
+										id="itemTextsImageProducts" onclick="addItemImageProducts()">
+										<i class="voyager-plus"></i>Agregar texto
+									</button>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="panel-body">
@@ -159,22 +200,22 @@
 										</thead>
 										<tbody id="columnItemText">
 											@foreach($itemTexts as $key => $value)
-												<tr id="item-{{ $value->language_id }}">												
+												<tr id="item-{{ $value->language }}">												
 													<td>
 														{{ $value->title }}
 														<input type="hidden" name="title[]" value="{{ $value->title }}" />
 													</td>
 													<td>
-                            {{ $value->description }}
-                            <input type="hidden" name="description[]" value="{{ $value->description }}" />
-                          </td>
-                          <td>
-														{{ $value->abreviatura.' - '.$value->name }}
-                            <input type="hidden" name="language[]" value="{{ $value->language_id }}" />                            
-                          </td>
-                          <td> 
-                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteItem({{ $value->language_id }})">-</button>
-                          </td>
+														{{ $value->language }}
+														<input type="hidden" name="language[]" value="{{ $value->language }}" />                            
+													</td>
+													<td>
+														{{ $value->description }}
+														<input type="hidden" name="description[]" value="{{ $value->description }}" />
+													</td>
+													<td> 
+														<button type="button" class="btn btn-danger btn-sm" onclick="deleteItem({{ $value->language_id }})">-</button>
+													</td>
 												</tr>
 											@endforeach
 										</tbody>
@@ -190,10 +231,10 @@
 					@endsection
 
 					<div class="panel-footer">
-							@section('submit-buttons')
-									<button type="submit" class="btn btn-primary save">{{ __('voyager::generic.save') }}</button>
-							@stop
-							@yield('submit-buttons')
+						@section('submit-buttons')
+							<button type="submit" class="btn btn-primary save">{{ __('voyager::generic.save') }}</button>
+						@stop
+						@yield('submit-buttons')
 					</div>
 					</form>
 
@@ -235,6 +276,24 @@
 		var params = {};
 		var $file;
 
+		const radioButtons = document.querySelectorAll('input[name="flexRadioDefault"]');
+		for (const radioButton of radioButtons) {
+			radioButton.addEventListener('change', showSelected);
+		}
+
+		function showSelected(e) {
+			if (this.checked) {
+				console.log("dmdndn = ", this.value)
+				if(this.value == 1){
+					$("#img-content").show()
+					$("#url-content").hide()
+				}else{
+					$("#img-content").hide()
+					$("#url-content").show()
+				}
+			}
+		}
+		
 		function deleteHandler(tag, isMulti) {
 			return function() {
 				$file = $(this).siblings(tag);
@@ -306,13 +365,13 @@
 		function addItemImageProducts(){
 			let title = $('#title').val()
 			let description = $('#description').val()
-			let language = $('#lenguage option:selected')
+			let language = $('#lenguage')
 			$('#messsage-item').html('')
 			if(title == '' || description == ''){
 				$('#messsage-item').html('Los campos son obligatorios')
 			}else {
 				if ($('#item-'+language.val()).length) {
-					$('#messsage-item').html('Ya existe un Item con el mismo idioma ' + language.text())
+					$('#messsage-item').html('Ya existe un Item con el mismo idioma ' + language.val())
 				}else{
 					$('#columnItemText').append(`
 						<tr id="item-${language.val()}">												
@@ -326,7 +385,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="language[]" value="${language.val()}" />
-								${language.text()}
+								${language.val()}
 							</td>
 							<td> 
 								<button type="button" class="btn btn-danger btn-sm" onclick="deleteItem(${language.val()})">-</button>
@@ -342,6 +401,160 @@
 		function deleteItem(id){
       $('#item-'+id).remove()
     }
+
+	console.clear();
+('use strict');
+
+
+// Drag and drop - single or multiple image files
+// https://www.smashingmagazine.com/2018/01/drag-drop-file-uploader-vanilla-js/
+// https://codepen.io/joezimjs/pen/yPWQbd?editors=1000
+(function () {
+    console.log("llegooooo")
+  'use strict';
+  
+  // Four objects of interest: drop zones, input elements, gallery elements, and the files.
+  // dataRefs = {files: [image files], input: element ref, gallery: element ref}
+
+  const preventDefaults = event => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  const highlight = event =>
+    event.target.classList.add('highlight');
+  
+  const unhighlight = event =>
+    event.target.classList.remove('highlight');
+
+  const getInputAndGalleryRefs = element => {
+    const zone = element.closest('.upload_dropZone') || false;
+    const gallery = zone.querySelector('.upload_gallery') || false;
+    const input = zone.querySelector('input[type="file"]') || false;
+    return {input: input, gallery: gallery};
+  }
+
+  const handleDrop = event => {
+    const dataRefs = getInputAndGalleryRefs(event.target);
+    dataRefs.files = event.dataTransfer.files;
+    handleFiles(dataRefs);
+  }
+
+
+  const eventHandlers = zone => {
+
+    const dataRefs = getInputAndGalleryRefs(zone);
+    if (!dataRefs.input) return;
+
+    // Prevent default drag behaviors
+    ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(event => {
+      zone.addEventListener(event, preventDefaults, false);
+      document.body.addEventListener(event, preventDefaults, false);
+    });
+
+    // Highlighting drop area when item is dragged over it
+    ;['dragenter', 'dragover'].forEach(event => {
+      zone.addEventListener(event, highlight, false);
+    });
+    ;['dragleave', 'drop'].forEach(event => {
+      zone.addEventListener(event, unhighlight, false);
+    });
+
+    // Handle dropped files
+    zone.addEventListener('drop', handleDrop, false);
+
+    // Handle browse selected files
+    dataRefs.input.addEventListener('change', event => {
+      dataRefs.files = event.target.files;
+      handleFiles(dataRefs);
+    }, false);
+
+  }
+
+
+  // Initialise ALL dropzones
+  const dropZones = document.querySelectorAll('.upload_dropZone');
+  for (const zone of dropZones) {
+    eventHandlers(zone);
+  }
+
+
+  // No 'image/gif' or PDF or webp allowed here, but it's up to your use case.
+  // Double checks the input "accept" attribute
+  const isImageFile = file => 
+    ['image/jpeg', 'image/png', 'image/svg+xml'].includes(file.type);
+
+
+  function previewFiles(dataRefs) {
+    if (!dataRefs.gallery) return;
+    for (const file of dataRefs.files) {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = function() {
+        let img = document.createElement('img');
+        img.className = 'upload_img mt-2';
+        img.setAttribute('alt', file.name);
+        img.src = reader.result;
+        dataRefs.gallery.appendChild(img);
+      }
+    }
+  }
+
+  // Based on: https://flaviocopes.com/how-to-upload-files-fetch/
+  const imageUpload = dataRefs => {
+
+    // Multiple source routes, so double check validity
+    if (!dataRefs.files || !dataRefs.input) return;
+
+    const url = dataRefs.input.getAttribute('data-post-url');
+    if (!url) return;
+
+    const name = dataRefs.input.getAttribute('data-post-name');
+    if (!name) return;
+
+    const formData = new FormData();
+    formData.append(name, dataRefs.files);
+
+    fetch(url, {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('posted: ', data);
+      if (data.success === true) {
+        previewFiles(dataRefs);
+      } else {
+        console.log('URL: ', url, '  name: ', name)
+      }
+    })
+    .catch(error => {
+      console.error('errored: ', error);
+    });
+  }
+
+
+  // Handle both selected and dropped files
+  const handleFiles = dataRefs => {
+
+    let files = [...dataRefs.files];
+
+    // Remove unaccepted file types
+    files = files.filter(item => {
+      if (!isImageFile(item)) {
+        console.log('Not an image, ', item.type);
+      }
+      return isImageFile(item) ? item : null;
+    });
+
+    if (!files.length) return;
+    dataRefs.files = files;
+
+    previewFiles(dataRefs);
+    imageUpload(dataRefs);
+  }
+
+})();
 
 	</script>
 @stop
