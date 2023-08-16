@@ -74,6 +74,68 @@ class ImageproductsController extends Controller
       }
       return response()->json($response, $response['status']);
     } 
+
+    /**
+     * @OA\Get(
+     *  tags={"Imagenes"},
+     *  summary="Devuelve todas las imagenes filtrando el lenguaje",
+     *  description="Retorna un Json con los titulos de las imagenes filtradas por lenguaje",
+     *  path="/api/v1/imageproducts/{language}",
+     *  security={{ "bearerAuth": {} }},
+     *  @OA\Parameter(
+     *    name="language",
+     *    in="path",
+     *    description="Prefijo del Idioma",
+     *    required=true,
+     *    @OA\Schema(
+     *      default="ES",
+     *      type="string",
+     *    )
+     *  ),
+     *  @OA\Parameter(
+     *    name="offset",
+     *    in="query",
+     *    description="offset o Limit de datos",
+     *    @OA\Schema(
+     *      default="0",
+     *      type="integer",
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=200,
+     *    description="Resultado de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="integer", example="200"),
+     *       @OA\Property(property="title de la imagen", type="varchar", example="String")
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Estado Invalido de la Operación",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Lenguaje no existe."),
+     *       @OA\Property(property="errors", type="string", example="..."),
+     *    )
+     *  )
+     * )
+     */
+		public function imagesForUser(Request $request, $language, $user_id)
+    {  	
+      if($language){
+        $image = DB::table('imageproducts')
+        ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
+        ->select('imageproducts.id', 'texts_imageproducts.language','imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description')
+        ->where('texts_imageproducts.language', '=', $language)
+        ->where('imageproducts.user_id', '=', $user_id)
+        ->get();
+        $response['status'] = 200;
+        $response['data'] = $image; 
+      }	else {
+        $response['status'] = 402;
+        $response['data'] = 'Lenguaje no encontrado.';
+      }
+      return response()->json($response, $response['status']);
+    } 
    /**
      *  @OA\Get(
      *  tags={"Imagenes"},

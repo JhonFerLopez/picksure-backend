@@ -59,7 +59,11 @@ $ php artisan voyager:install --with-dummy
 $ php artisan serve
 ```
 Server running on [http://127.0.0.1:8000].
-
+OR
+```bash
+$ php artisan serve --host=192.168.1.12 --port=8000
+```
+Server running on [http://192.168.1.12:8000].
 ## User Dummy Administrator 
 
 ```

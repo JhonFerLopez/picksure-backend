@@ -137,6 +137,7 @@
 								<input type="text" class="form-control" name="img_url" id="img_url" placeholder="storage/posts/post2.jpg">
 							</div>
 						</div>
+						<input type="hidden" name="is_public" class="is_public" value="1"/>
 						<br>
 						<div class="form-group">
 							<input type="hidden" name="setting_tab" class="setting_tab" />

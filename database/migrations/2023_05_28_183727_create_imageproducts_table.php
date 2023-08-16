@@ -19,6 +19,7 @@ return new class extends Migration
 			$table->string('img_url');
 			$table->unsignedBigInteger('user_id');
 			$table->foreign('user_id')->references('id')->on('users');
+			$table->integer('is_public');
 			$table->timestamps();
 		});
 	}

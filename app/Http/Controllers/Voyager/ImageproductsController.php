@@ -477,14 +477,18 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 	public function store(Request $request)
 	{
 		$request['user_id'] = 1;
-
 		if ($request->hasFile('image_product')) {
+			$request->validate([
+				'image_product' => 'required|image|max:20480', // Máximo 20 MB (20480 kilobytes)
+			]);
+
             $file = $request->file('image_product');
 
-            $path = $file->store('uploads', 'public');
+            $path = $file->store('posts', 'public');
 
             // Obtiene la URL completa de la imagen cargada
-            $request['img_url'] = asset('storage/posts/' . $path);
+            //$request['img_url'] = asset('storage/posts/' . $path);
+            $request['img_url'] = $path;
         }
 
 		$slug = $this->getSlug($request);

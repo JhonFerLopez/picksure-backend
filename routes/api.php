@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ImageproductsController;
+use App\Http\Controllers\ParametersController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\TownController;
@@ -60,10 +61,14 @@ Route::get('/qualify/{id}', [QualifyController::class, 'rateApp']);
 Route::post('/qualify/{id}', [QualifyController::class, 'createQualifyApp']);
 
 //Images
+Route::get('/imageproducts/user/{language}/{user_id}', [ImageproductsController::class, 'imagesForUser']);
 Route::get('/imageproducts/{language}', [ImageproductsController::class, 'index']);
 Route::get('/imageproducts/{language}/{image_id}', [ImageproductsController::class, 'showOne']); 
 Route::get('/imageproducts/category/{language}/{category_id}', [ImageproductsController::class, 'categoryId']);
 Route::get('/imageproducts/filter/search/{language}', [ImageproductsController::class, 'search']);
+
+//parameters
+Route::get('/parameters', [ParametersController::class, 'index']);
 
 Route::get('/greeting', function () {
     return 'Hello World';
