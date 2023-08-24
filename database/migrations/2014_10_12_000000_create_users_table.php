@@ -26,6 +26,10 @@ return new class extends Migration
             $table->foreign('location_id')->references('id')->on('locations');
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp('start_date_subscriber')->nullable();
+            $table->timestamp('end_date_subscriber')->nullable();
+            $table->timestamp('start_date_pautante')->nullable();
+            $table->timestamp('end_date_pautante')->nullable();
         });
     }
 

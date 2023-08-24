@@ -47,5 +47,9 @@ class User extends \TCG\Voyager\Models\User
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'start_date_subscriber' => 'datetime',
+        'end_date_subscriber' => 'datetime',
+        'start_date_pautante' => 'datetime',
+        'end_date_pautante' => 'datetime',
     ];
 }

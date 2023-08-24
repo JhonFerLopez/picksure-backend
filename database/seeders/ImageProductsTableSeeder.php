@@ -17,14 +17,16 @@ class ImageProductsTableSeeder extends Seeder
     {
         DB::table('imageproducts')->insert([
             [
-                "img_url" => "storage/posts/post1.jpg",
+                "img_url" => "post1.jpg",
                 "user_id" => 1,
-                "is_public" => 1
+                "is_public" => 1,
+                "status" => 1
             ],
             [
-                "img_url" => "storage/posts/post2.jpg",
+                "img_url" => "post2.jpg",
                 "user_id" => 1,
-                "is_public" => 1
+                "is_public" => 1,
+                "status" => 1
             ]
         ]);
     }

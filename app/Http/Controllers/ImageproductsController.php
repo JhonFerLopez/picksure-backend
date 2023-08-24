@@ -270,13 +270,13 @@ class ImageproductsController extends Controller
   // Consultar ImagenProduct por Id de Categoría
     public function categoryId(Request $request, $language, $category_id)
     {  
-      $languageData = Language::where('abreviatura', $language)->first();
-      $images = DB::table('imageproducts')
+    //$languageData = Language::where('abreviatura', $language)->first();
+    $images = DB::table('imageproducts')
       ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
-      ->join('imageproduct_category', 'imageproduct_category.imageproduct_id', '=', 'imageproducts.id')
-      ->select('imageproducts.id', 'texts_imageproducts.language_id', 'texts_imageproducts.description','imageproducts.img_url')
-      ->where('texts_imageproducts.language_id', $languageData->id)
-      ->where('imageproduct_category.category_id', $category_id)
+      ->join('imageproducts_category', 'imageproducts_category.imageproduct_id', '=', 'imageproducts.id')
+      ->select('imageproducts.id', 'texts_imageproducts.language', 'texts_imageproducts.description','imageproducts.img_url')
+      ->where('texts_imageproducts.language', $language)
+      ->where('imageproducts_category.category_id', $category_id)
       ->get();
       if(!count($images) > 0){
         $response['status'] = Response::HTTP_NOT_FOUND;

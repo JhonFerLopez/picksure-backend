@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PaymentHistory;
 use App\Models\User;
 use App\Models\UserLikeCategory;
 use App\Models\UserLikeImageproduct;
@@ -453,9 +454,9 @@ class UserController extends Controller
     $response["data"] = $userInfo;
     return response()->json($response, $response['status']);
 
-}
+  }
 
- /**
+  /**
      * @OA\Delete(
      *  tags={"Usuarios"},
      *  summary="Elimina un usuario",
@@ -489,56 +490,75 @@ class UserController extends Controller
      *    )
      *  )
      * )
-     */
- public function DeleteUser($user_id){
+  */
+  public function DeleteUser($user_id){
 
-  $delete = DB::table('users')
-  ->where('id', $user_id)  
-  ->delete();
+    $delete = DB::table('users')
+    ->where('id', $user_id)  
+    ->delete();
 
-  return response()->json('Usuario eliminado', 200);
+    return response()->json('Usuario eliminado', 200);
   }
 
- /**
-     * @OA\Put(
-     *  tags={"Usuarios"},
-     *  summary="Actualiza la información de un usuario",
-     *  description="Actualiza la información de un usuario seleccionado",
-     *  path="/api/v1/user/update_users/{user_id}",
-     *  security={{ "bearerAuth": {} }},
-     * * @OA\Parameter(
-     *    name="user_id",
-     *    in="path",
-     *    description="Id del usuario",
-     *    required=true,
-     *    @OA\Schema(
-     *      default="1",
-     *      type="integer",
-     *    )
-     *  ),
-     * @OA\Response(
-     *    response=200,
-     *    description="Resultado de la Operación",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="status", type="integer", example="200"),
-     *       @OA\Property(property="title de la imagen", type="varchar", example="String")
-     *    )
-     *  ),
-     *  @OA\Response(
-     *    response=422,
-     *    description="Estado Invalido de la Operación",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", example="No esxite like"),
-     *       @OA\Property(property="errors", type="string", example="..."),
-     *    )
-     *  )
-     * )
-     */
-    public function UpdateUser($user_id){
+  /**
+       * @OA\Put(
+       *  tags={"Usuarios"},
+       *  summary="Actualiza la información de un usuario",
+       *  description="Actualiza la información de un usuario seleccionado",
+       *  path="/api/v1/user/update_users/{user_id}",
+       *  security={{ "bearerAuth": {} }},
+       * * @OA\Parameter(
+       *    name="user_id",
+       *    in="path",
+       *    description="Id del usuario",
+       *    required=true,
+       *    @OA\Schema(
+       *      default="1",
+       *      type="integer",
+       *    )
+       *  ),
+       * @OA\Response(
+       *    response=200,
+       *    description="Resultado de la Operación",
+       *    @OA\JsonContent(
+       *       @OA\Property(property="status", type="integer", example="200"),
+       *       @OA\Property(property="title de la imagen", type="varchar", example="String")
+       *    )
+       *  ),
+       *  @OA\Response(
+       *    response=422,
+       *    description="Estado Invalido de la Operación",
+       *    @OA\JsonContent(
+       *       @OA\Property(property="message", type="string", example="No esxite like"),
+       *       @OA\Property(property="errors", type="string", example="..."),
+       *    )
+       *  )
+       * )
+  */
+  public function UpdateUser($user_id){
 
-    }
+  }
 
-/**
+  public function PaySuscription(Request $request) {
+    $user = User::find($request->id);
+    $user->start_date_subscriber = $request->start_date_subscriber;
+    $user->end_date_subscriber = $request->end_date_subscriber;
+    $user->update();
+
+    $payment_history = new PaymentHistory;
+    $payment_history->user_id = $request->id;
+    $payment_history->payment_reference = $request->payment_reference;
+    $payment_history->amount = $request->amount;
+    $payment_history->is_approved = $request->is_approved;
+    $payment_history->save();
+
+    $response["status"] = 200;
+    $response["message"] = 'Se actualizo correctamente';
+
+    return response()->json($response, $response['status']);
+  }
+
+  /**
      * @OA\Get(
      *  tags={"Usuarios"},
      *  summary="Muestra toda la informacion",
@@ -572,22 +592,67 @@ class UserController extends Controller
      *    )
      *  )
      * )
-     */
+  */
   public function ShowInfoUser($user_id){
 
     $$user_id = DB::table('users')
-      ->select('users.id', 'users.name', 'users.last_name', 'users.email', 'users.created_at','users.avatar')
+      ->select(
+        'users.id', 
+        'users.name', 
+        'users.last_name', 
+        'users.email', 
+        'users.date_of_birth', 
+        'users.phone', 
+        'users.location_id', 
+        'users.city', 
+        'users.created_at',
+        'users.email_verified_at',
+        'users.start_date_subscriber',
+        'users.end_date_subscriber',
+        'users.start_date_pautante',
+        'users.end_date_pautante',
+        'users.avatar'
+      )
       ->where('users.id', $user_id)
-      ->get();
-      if(!count($$user_id) > 0){
+      ->first();
+      if(!$$user_id){
         $response['status'] = Response::HTTP_NOT_FOUND;
         $response['data'] = 'Este usuario no existe';
       }else{
+        $payment_suscription = [];
+        $payment_pautante = [];
+
+        //if($$user_id->is_subscriber == 1){
+          $payment_suscription = DB::table('payment_histories')
+          ->select(
+            'payment_histories.payment_reference', 
+            'payment_histories.amount', 
+            'payment_histories.created_at', 
+          )
+          ->where('payment_histories.payment_reference', 'SUSCRIPTION')
+          ->where('payment_histories.user_id', $user_id)
+          ->get();
+        //}
+        //if($$user_id->is_pautante == 1){
+          $payment_pautante = DB::table('payment_histories')
+          ->select(
+            'payment_histories.payment_reference', 
+            'payment_histories.amount', 
+            'payment_histories.created_at', 
+          )
+          ->where('payment_histories.payment_reference', 'PAUTANTES')
+          ->where('payment_histories.user_id', $user_id)
+          ->get();
+        //}
+
+        $$user_id->suscriptions = $payment_suscription;
+        $$user_id->pautantes = $payment_pautante;
+
         $response['status'] = Response::HTTP_OK;
         $response['data'] = $$user_id;
       }
       return response()->json($response, $response['status']); 
   }
 
-  
+    
 }

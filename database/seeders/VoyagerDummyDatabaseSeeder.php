@@ -22,11 +22,11 @@ class VoyagerDummyDatabaseSeeder extends Seeder
             PagesTableSeeder::class,
             TranslationsTableSeeder::class,
             PermissionRoleTableSeeder::class,
-            TextCategoriesTableSeeder::class,
             ImageProductsTableSeeder::class,
             ImageProductsCategoryTableSeeder::class,
             TextsCategoriesTableSeeder::class,
             TextsImageProductsTableSeeder::class,
+            ParametersSeeder::class,
         ]);
     }
 }

@@ -138,6 +138,9 @@
 							</div>
 						</div>
 						<input type="hidden" name="is_public" class="is_public" value="1"/>
+						<input type="hidden" name="is_pautante" class="is_pautante" value="0"/>
+						<input type="hidden" name="status" class="status" value="1"/>
+						<input type="hidden" name="user_id" class="user_id" value="1"/>
 						<br>
 						<div class="form-group">
 							<input type="hidden" name="setting_tab" class="setting_tab" />

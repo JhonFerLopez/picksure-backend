@@ -17,6 +17,7 @@ use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 
 use App\Models\Language;
+use App\Models\Imageproduct;
 use App\Models\TextsImageproducts;
 use App\Models\ImageproductsCategory;
 use TCG\Voyager\Models\Category;
@@ -476,7 +477,7 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 	 */
 	public function store(Request $request)
 	{
-		$request['user_id'] = 1;
+	
 		if ($request->hasFile('image_product')) {
 			$request->validate([
 				'image_product' => 'required|image|max:20480', // Máximo 20 MB (20480 kilobytes)
@@ -484,13 +485,12 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 
             $file = $request->file('image_product');
 
-            $path = $file->store('posts', 'public');
+            $path = $file->store('imageproducts', 'public');
 
             // Obtiene la URL completa de la imagen cargada
             //$request['img_url'] = asset('storage/posts/' . $path);
             $request['img_url'] = $path;
         }
-
 		$slug = $this->getSlug($request);
 
 		$dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
@@ -507,6 +507,17 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 		$input = $request->all();
 		$items = $this->addTexts($data->id, $input);
 
+		$itemCategory = $request['category'];
+		if(count($itemCategory) > 0){
+			foreach ($itemCategory as $key => $value) {
+				$texts = ImageproductsCategory::create([
+					'imageproduct_id' => $data->id,
+					'category_id' => $value,
+				]);
+			} 	
+			DB::commit();
+		}
+		
 		if (!$request->has('_tagging')) {
 			if (auth()->user()->can('browse', $data)) {
 				$redirect = redirect()->route("voyager.{$dataType->slug}.index");
@@ -1112,4 +1123,54 @@ class ImageproductsController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 			return $e;
 		}
 	}
+
+	public function addImageProducts(Request $request){
+        $image = new Imageproduct;
+        $image->user_id = $request["user_id"];
+        $image->is_public = 0;
+        $image->is_pautante = 0;
+        $image->is_status = 1;
+        
+        if ($request->hasFile('image_product')) {
+
+			$request->validate([
+				'image_product' => 'required|image|max:20480', // Máximo 20 MB (20480 kilobytes)
+			]);
+
+            $file = $request->file('image_product');
+
+            $path = $file->store('imageproducts', 'public');
+
+			$image->img_url = $path;
+        }
+        $image->save();
+		$result_image = $image->id;
+		
+		$itemProducts = $request['text_products'];
+		if(count($itemProducts) > 0){
+			foreach ($itemProducts as $key => $value) {
+				$texts = TextsImageproducts::create([
+					'title' => $value["title"],
+					'description' => $value["description"],
+					'imageproduct_id' => $result_image,
+					'language' => $value["language"],
+				]);
+			} 	
+			DB::commit();
+		}
+
+		$itemCategory = $request['category'];
+		if(count($itemCategory) > 0){
+			foreach ($itemCategory as $key => $value) {
+				$texts = ImageproductsCategory::create([
+					'imageproduct_id' => $data->id,
+					'category_id' => $value,
+				]);
+			} 	
+			DB::commit();
+		}
+
+		return response()->json(['success' => true, 'data' => $result_image]);
+
+    }
 }

@@ -11,7 +11,7 @@ class ImageproductsCategory extends Model
     /** 
      * nameTable 
     */
-    protected $table = 'imageproduct_category';
+    protected $table = 'imageproducts_category';
     /**
      * The attributes that are mass assignable.
      *

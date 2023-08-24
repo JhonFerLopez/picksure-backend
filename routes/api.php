@@ -41,6 +41,7 @@ Route::post('/user/like_imageproduct/{user_id}/{img_id}', [UserController::class
 Route::middleware('auth:sanctum')->get('/user/like_imageproduct/{user_id}/{lang_id}', [UserController::class, 'showLikeImageproduct']);
 Route::delete('/user/like_imageproduct/{user_id}/{img_id}', [UserController::class, 'deleteLikeImageproduct']);
 Route::post('/user/create_users', [UserController::class, 'CreateUser']);
+Route::post('/user/pay_suscription', [UserController::class, 'PaySuscription']);
 Route::delete('/user/delete_users/{user_id}', [UserController::class, 'DeleteUser']);
 Route::put('/user/Update_users/{user_id}', [UserController::class, 'UpdateUser']);
 Route::get('/user/show_users/{user_id}', [UserController::class, 'ShowInfoUser']);
@@ -66,7 +67,7 @@ Route::get('/imageproducts/{language}', [ImageproductsController::class, 'index'
 Route::get('/imageproducts/{language}/{image_id}', [ImageproductsController::class, 'showOne']); 
 Route::get('/imageproducts/category/{language}/{category_id}', [ImageproductsController::class, 'categoryId']);
 Route::get('/imageproducts/filter/search/{language}', [ImageproductsController::class, 'search']);
-
+Route::post('/imageproducts/add', [ImageproductsController::class, 'addImageProducts']);
 //parameters
 Route::get('/parameters', [ParametersController::class, 'index']);
 
