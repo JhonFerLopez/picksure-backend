@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('end_date_subscriber')->nullable();
             $table->integer('valor');
             $table->string('description');
-            $table->string('url');
+            $table->string('url_destination');
             $table->string('img_url');
         });
     }

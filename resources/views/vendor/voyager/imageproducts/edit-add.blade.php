@@ -137,32 +137,9 @@
 								<input type="text" class="form-control" name="img_url" id="img_url" placeholder="storage/posts/post2.jpg">
 							</div>
 						</div>
-						<input type="hidden" name="is_public" class="is_public" value="1"/>
-						<input type="hidden" name="is_pautante" class="is_pautante" value="0"/>
-						<input type="hidden" name="status" class="status" value="1"/>
-						<input type="hidden" name="user_id" class="user_id" value="1"/>
-						<br>
+						
 						<div class="form-group">
-							<input type="hidden" name="setting_tab" class="setting_tab" />
-							<div class="panel-heading new-setting">
-								<hr>
-								<h3 class="panel-title">Agregar información de la imágen</h3>
-								<div id="messsage-item" class="text-danger"></div>
-							</div>
-							<div class="col-md-3">
-								<label for="title">Título</label>
-								<input type="text" class="form-control" name="title" id="title" placeholder="Escribe el título">
-							</div>
-							
-							<div class="col-md-1">
-								<label for="group">Idioma</label>
-								<input type="text" class="form-control" name="lenguage" id="lenguage" placeholder="ES">
-							</div>
-							<div class="col-md-3">
-								<label for="description">Descripción</label>
-								<textarea class="form-control" name="description" id="description" placeholder="Descripción del modelo" ></textarea>
-							</div>
-							<div class="col-md-3">
+							<div class="col-md-12">
 								<label for="description">Selecciona la Categoría</label>
 								<div class="categories-product">
 									@foreach($categories as $category)
@@ -178,7 +155,42 @@
 									@endforeach
 								</div>
 							</div>
-							<div class="col-md-2">
+						</div>
+						<input type="hidden" name="is_public" class="is_public" value="1"/>
+						<input type="hidden" name="status" class="status" value="1"/>
+						<input type="hidden" name="user_id" class="user_id" value="1"/>
+
+						<hr>
+						<div class="form-group">
+							<input type="hidden" name="setting_tab" class="setting_tab" />
+							<div class="">
+								<h3 class="panel-title">Agregar información de la imágen</h3>
+								<div id="messsage-item" class="text-danger"></div>
+							</div>
+							<div class="col-md-3">
+								<label for="title">Título</label>
+								<input type="text" class="form-control" name="title" id="title" placeholder="Escribe el título">
+							</div>
+							
+							<div class="col-md-3">
+								<label for="group">Idioma</label>
+								<select class="form-control" name="lenguage" id="lenguage">
+									<option  value=""> Seleccione </option>
+									@foreach($languages as $language)
+										<option 
+											value="{{$language->prefijo}}"
+										>
+											{{$language->name}}
+										</option>
+									@endforeach
+								</select>
+							</div>
+							<div class="col-md-3">
+								<label for="description">Descripción</label>
+								<textarea class="form-control" name="description" id="description" placeholder="Descripción del modelo" ></textarea>
+							</div>
+							
+							<div class="col-md-3">
 								<div class="form-group">
 									<button type="button" class="btn btn-primary pull-right new-setting-btn" 
 										id="itemTextsImageProducts" onclick="addItemImageProducts()">

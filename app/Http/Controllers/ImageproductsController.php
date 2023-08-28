@@ -119,10 +119,10 @@ class ImageproductsController extends Controller
      *  )
      * )
      */
-		public function imagesForUser(Request $request, $language, $user_id)
+		public function imagesForUser (Request $request, $language, $user_id)
     {  	
       if($language){
-        $image = DB::table('imageproducts')
+        $image = DB::table('imageproductss')
         ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
         ->select('imageproducts.id', 'texts_imageproducts.language','imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description')
         ->where('texts_imageproducts.language', '=', $language)
@@ -268,8 +268,8 @@ class ImageproductsController extends Controller
   */
 
   // Consultar ImagenProduct por Id de Categoría
-    public function categoryId(Request $request, $language, $category_id)
-    {  
+  public function categoryId(Request $request, $language, $category_id)
+  {  
     //$languageData = Language::where('abreviatura', $language)->first();
     $images = DB::table('imageproducts')
       ->join('texts_imageproducts','texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
@@ -286,7 +286,7 @@ class ImageproductsController extends Controller
         $response['data'] = $images;
       } 
       return response()->json($response, $response['status']);
-    }
+  }
 
   /**
    * @OA\Get(
@@ -353,15 +353,15 @@ class ImageproductsController extends Controller
   // Consultar ImagenProduct modalidad Search
   public function search(Request $request, $language)
   {    	
-    $languageData = Language::where('abreviatura', $language)->first();
+    //$languageData = Language::where('abreviatura', $language)->first();
 
     $image = DB::table('imageproducts')
       ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
       ->select('imageproducts.id', 'texts_imageproducts.title', 'texts_imageproducts.description')
-      ->where('texts_imageproducts.language_id', '=', $languageData->id)
+      ->where('texts_imageproducts.language', '=', $language)
       ->when(!empty($request->category), function($category) use ($request) {
-        return $category->join('imageproduct_category', 'imageproduct_category.imageproduct_id', '=', 'imageproducts.id')
-        ->where('imageproduct_category.category_id', '=', $request->category);
+        return $category->join('imageproducts_category', 'imageproducts_category.imageproduct_id', '=', 'imageproducts.id')
+        ->where('imageproducts_category.category_id', '=', $request->category);
       })
       ->when(!empty($request->keyword), function($keyword) use ($request) {
         return $keyword->where( function($query) use ($request) {
