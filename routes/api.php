@@ -4,7 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LanguagesController;
 use App\Http\Controllers\ImageproductsController;
+use App\Http\Controllers\PautasUsersController;
+use App\Http\Controllers\ImagePautasController;
 use App\Http\Controllers\ParametersController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
@@ -61,13 +64,24 @@ Route::get('/qualify', [QualifyController::class, 'index']);
 Route::get('/qualify/{id}', [QualifyController::class, 'rateApp']);
 Route::post('/qualify/{id}', [QualifyController::class, 'createQualifyApp']);
 
+//languages
+Route::get('/languages', [LanguagesController::class, 'index']);
+
 //Images
+Route::get('/imageproducts/create_folder/{id}', [ImageproductsController::class, 'createDirectory']);
+Route::post('/imageproducts/add', [ImageproductsController::class, 'addImageProducts']);
 Route::get('/imageproducts/user/{language}/{user_id}', [ImageproductsController::class, 'imagesForUser']);
-Route::get('/imageproducts/{language}', [ImageproductsController::class, 'index']);
+Route::get('/imageproducts/{language}/{limit}/{offset}', [ImageproductsController::class, 'index']);
 Route::get('/imageproducts/{language}/{image_id}', [ImageproductsController::class, 'showOne']); 
 Route::get('/imageproducts/category/{language}/{category_id}', [ImageproductsController::class, 'categoryId']);
 Route::get('/imageproducts/filter/search/{language}', [ImageproductsController::class, 'search']);
-Route::post('/imageproducts/add', [ImageproductsController::class, 'addImageProducts']);
+
+//Pautas
+Route::get('/pautasusers', [PautasUsersController::class, 'index']);
+
+//Imagenes Pautadas
+Route::get('/imagepautas/{user_id}/{language}', [ImagePautasController::class, 'index']);
+
 //parameters
 Route::get('/parameters', [ParametersController::class, 'index']);
 

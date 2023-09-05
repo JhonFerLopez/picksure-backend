@@ -27,6 +27,14 @@ class ParametersSeeder extends Seeder
                 'name_parameter'         => 'max_pautantes',
                 'value_parameter'        => '3',
             ]);
+            Parameters::create([
+                'name_parameter'         => 'max_images_pautadas_per_pagination',
+                'value_parameter'        => '2',
+            ]);
+            Parameters::create([
+                'name_parameter'         => 'max_images_per_pagination',
+                'value_parameter'        => '30',
+            ]);
         }
     }
 }

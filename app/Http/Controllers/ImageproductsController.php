@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Imageproduct;
 use App\Models\Language;
 use App\Models\TextsImageproducts;
+use App\Models\ImageproductsCategory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -58,13 +61,17 @@ class ImageproductsController extends Controller
      *  )
      * )
      */
-		public function index(Request $request, $language)
+		public function index(Request $request, $language, $limit, $offset)
     {  	
       if($language){
         $image = DB::table('imageproducts')
         ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
-        ->select('imageproducts.id', 'texts_imageproducts.language','imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description')
+        ->select('imageproducts.id', 'texts_imageproducts.language','imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description' )
         ->where('texts_imageproducts.language', '=', $language)
+        ->where('imageproducts.status', '=', 1)
+        ->where('imageproducts.user_id', '=', 1)
+        ->orderBy('imageproducts.created_at', 'DESC')
+        ->offset($offset)->limit($limit)
         ->get();
         $response['status'] = 200;
         $response['data'] = $image; 
@@ -122,9 +129,10 @@ class ImageproductsController extends Controller
 		public function imagesForUser (Request $request, $language, $user_id)
     {  	
       if($language){
-        $image = DB::table('imageproductss')
+        $image = DB::table('imageproducts')
         ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
-        ->select('imageproducts.id', 'texts_imageproducts.language','imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description')
+        ->leftJoin('images_pautas', 'imageproducts.id', '=', 'images_pautas.imageproducts_id')
+        ->select('imageproducts.id', 'texts_imageproducts.language','imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description', 'images_pautas.id as id_pautas')
         ->where('texts_imageproducts.language', '=', $language)
         ->where('imageproducts.user_id', '=', $user_id)
         ->get();
@@ -420,4 +428,79 @@ class ImageproductsController extends Controller
     User::findOrFail($id)->delete();
     return response('Deleted Successfully', 200);
   }*/
+
+
+	public function createDirectory(Request $request, $id)
+	{
+		$carpetaPrincipal = 'usersdemo';
+
+    $directorio = $carpetaPrincipal . '/' . 'usersdemo';
+    Storage::makeDirectory($carpetaPrincipal);
+    return response()->json(['success' => true, 'data' => $directorio]);
+    
+
+	}
+
+
+  public function addImageProducts(Request $request){
+    $image = new Imageproduct;
+    $image->user_id = $request["user_id"];
+    $image->is_public = 0;
+    $image->status = 1;
+    
+    if ($request->hasFile('img_url')) {
+      
+      $request->validate([
+        'img_url' => 'required|image|max:20000', // Máximo 20 MB (20480 kilobytes)
+      ]);
+
+      $file = $request->file('img_url');
+
+      $path = $file->store('imageproducts/users/'.$request["user_id"], 'public');
+
+      $image->img_url = $path;
+    }
+
+    $image->save();
+    
+    $result_image = $image->id;
+    
+    $itemProducts = $request['text_products'];
+    $itemProductsARR = json_decode($itemProducts, true);
+    if(count($itemProductsARR) > 0){
+      foreach ($itemProductsARR as $key => $value) {
+        $texts = TextsImageproducts::create([
+          'title' => $value["title"],
+          'description' => $value["description"],
+          'imageproduct_id' => $result_image,
+          'language' => $value["language"],
+        ]);
+      } 	
+      DB::commit();
+    }
+
+    $itemCategory = $request['categories'];
+    $itemCategoryARR = json_decode($itemCategory, true);
+    if(count($itemCategoryARR) > 0){
+      foreach ($itemCategoryARR as $key => $value) {
+        $texts = ImageproductsCategory::create([
+          'imageproduct_id' => $result_image,
+          'category_id' => $value,
+        ]);
+      } 	
+      DB::commit();
+    }
+
+    $imageAdd = DB::table('imageproducts')
+      ->join('texts_imageproducts', 'texts_imageproducts.imageproduct_id', '=', 'imageproducts.id')
+      ->leftJoin('images_pautas', 'imageproducts.id', '=', 'images_pautas.imageproducts_id')
+      ->select('imageproducts.id', 'texts_imageproducts.language','imageproducts.img_url' ,'texts_imageproducts.title', 'texts_imageproducts.description', 'images_pautas.id as id_pautas')
+      ->where('texts_imageproducts.language', '=', $request["language"])
+      ->where('imageproducts.user_id', '=', $request["user_id"])
+      ->where('imageproducts.id', '=', $result_image)
+      ->get();
+
+    return response()->json(['success' => true, 'data' => $imageAdd]);
+
+  }
 }
